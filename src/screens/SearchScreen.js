@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, FlatList, StyleSheet, Text } from "react-native";
+import { View, FlatList, StyleSheet } from "react-native";
 import CardMedium from "../components/CardMedium";
 import mock_data from "./data.json";
 // import { useFonts } from "expo-font";

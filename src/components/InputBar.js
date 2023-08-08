@@ -9,7 +9,9 @@ export default function InputBar(props) {
             <TextInput style= {{fontSize:14}} 
             placeholder={props.placeholder}
             placeholderTextColor="#d9d9d9"
-            onChangeText={props.onChangeText}
+            onChangeText={props.onType}
+            value = {props.value}
+            secureTextEntry={props.isSecure}
              />
         </View>
     );

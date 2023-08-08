@@ -1,50 +1,92 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
-import Button from "../components/Button";
+import { View, Text, StyleSheet } from "react-native";
+import Button from "../components/Button/Button";
 import InputBar from "../components/InputBar";
+import { getAuth, signOut, signInWithEmailAndPassword } from "firebase/auth";
+import app from "../../firebaseConfig";
+import { Formik } from "formik";
+import { showMessage } from "react-native-flash-message";
+import ErrorHandler from "../utils/ErrorHandler";
 
-export default function ProfileScreen({ navigation }) {
-    //login mock-up
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+const initialFormValues = {
+    usermail: "",
+    password: "",
+};
 
-    function handleSubmit() {
-        if (!username || !password) {
-            Alert.alert("Login Message", "Bilgiler Boş Bırakılamaz!");
-            console.log("Hatalı Deneme")
-        } else {
-            const user = {
-                username,
-                password,
-            };
-            Alert.alert("Giriş Başarılı", "Anasayfaya yönlendiriliyorsunuz!");
-            navigation.navigate("Home",{user});
-        }
+const LoginScreen = ({ navigation }) => {
+    const [loading, setLoading] = useState(false);
+
+    function handleFormSubmit(formValues) {
+        const auth = getAuth(app);
+
+        signInWithEmailAndPassword(
+            auth,
+            formValues.usermail,
+            formValues.password
+        )
+            .then((res) =>
+                showMessage({ message: "Giriş Başarılı !", type: "success" })
+            )
+            .catch((err) => showMessage({ message: ErrorHandler(err.code), type: "danger" }));
     }
+    
+    // Use it later
+    // function handleSignOut() {
+    //     const auth = getAuth(app);
+    //     signOut(auth)
+    //         .then((res) => console.log("Çıkış yaptı"))
+    //         .catch((err) => console.log(err));
+    // }
 
     // Navigation
-    function goToMemberSign() {
+
+    function goToMemberSignUp() {
         navigation.navigate("SignUpScreen");
-        console.log(navigation);
     }
 
     return (
         <View style={styles.container}>
             <Text style={styles.text}> Giriş Yapın </Text>
-            <View style={styles.input_container}>
-                <InputBar
-                    placeholder={"Kullanıcı Adı"}
-                    onChangeText={setUsername}
-                />
-                <InputBar placeholder={"Parola"} onChangeText={setPassword} />
-            </View>
-            <View style={styles.button_container}>
-                <Button text="Kaydol" onPress={goToMemberSign} />
-                <Button text="Giriş Yap" onPress={handleSubmit} />
-            </View>
+            <Formik
+                initialValues={{ initialFormValues }}
+                onSubmit={handleFormSubmit}
+            >
+                {({ values, handleChange, handleSubmit }) => (
+                    <>
+                        <View style={styles.input_container}>
+                            <InputBar
+                                onType={handleChange("usermail")}
+                                value={values.usermail}
+                                placeholder={"E-posta adresi"}
+                            />
+                            <InputBar
+                                onType={handleChange("password")}
+                                value={values.password}
+                                placeholder={"Parola"}
+                                isSecure
+                            />
+                        </View>
+                        <View style={styles.button_container}>
+                            <Button
+                                text="Kaydol"
+                                onPress={goToMemberSignUp}
+                                theme="secondary"
+                            />
+                            <Button
+                                text="Giriş Yap"
+                                onPress={handleSubmit}
+                                loading={loading}
+                            />
+                        </View>
+                    </>
+                )}
+            </Formik>
+            {/* <View style={styles.button_container}>
+                <Button text="çıkış Yap" onPress={handleSignOut} />
+            </View> */}
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -65,3 +107,5 @@ const styles = StyleSheet.create({
         margin: 16,
     },
 });
+
+export default LoginScreen;

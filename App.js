@@ -2,6 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import NavBar from "./src/components/NavBar";
 import { useFonts } from "expo-font";
+import FlashMessage from "react-native-flash-message";
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -15,6 +16,7 @@ export default function App() {
     return (
         <NavigationContainer>
             <NavBar />
+            <FlashMessage position="top"/>
         </NavigationContainer>
     );
 }

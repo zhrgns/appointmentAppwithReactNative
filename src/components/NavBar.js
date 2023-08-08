@@ -10,6 +10,7 @@ import CalendarScreen from "../screens/CalendarScreen";
 import SearchScreen from "../screens/SearchScreen";
 import ServiceDetailScreen from "../screens/ServiceDetailScreen";
 import ServiceBookingScreen from "../screens/ServiceBookingScreen";
+import Colors from "../utils/Colors";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -53,7 +54,7 @@ export default NavBar = () => {
                 //returns in each icon
                 return <Ionicons name={iconName} size={size} color={color} />;
             },
-            tabBarActiveTintColor: "#1976d2",
+            tabBarActiveTintColor: Colors.color_blue,
             tabBarInactiveTintColor: "gray",
         };
     }

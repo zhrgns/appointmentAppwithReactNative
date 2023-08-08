@@ -7,7 +7,7 @@ import {
     Modal,
     TouchableOpacity,
 } from "react-native";
-import Button from "../components/Button";
+import Button from "../components/Button/Button";
 import React, { useState } from "react";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import moment from "moment";
