@@ -10,10 +10,10 @@ const style_base = StyleSheet.create({
         justifyContent:"center"
     },
     text: {
-        fontWeight: "bold",
         textAlign: "center",
         fontSize: 18,
         padding: 10,
+        fontFamily:"Mulish-Bold"
     },
     activity_icon :{
         padding: 13,
@@ -28,7 +28,7 @@ export default {
             backgroundColor:Colors.color_blue,
         }, text : {
             ...style_base.text,
-            color: "#fff",
+            color: Colors.color_white,
 
         }
     }),
@@ -37,7 +37,7 @@ export default {
         ...style_base,
         container: {
             ...style_base.container, 
-            backgroundColor: "#fff",
+            backgroundColor: Colors.color_white,
             borderColor: Colors.color_blue,
             borderWidth:2,
         }, text : {

@@ -1,32 +1,39 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import Colors from "../utils/Colors";
+import { Ionicons } from "@expo/vector-icons";
 
 const Category = ({ category, isSelected, onPress }) => {
     return (
         <TouchableOpacity
-            style={[
-                styles.categoryButton,
-                isSelected ? styles.selectedButton : null,
-            ]}
+            style={[styles.button, isSelected ? styles.selectedButton : null]}
             onPress={onPress}
         >
-            <Text
-                style={[
-                    styles.ButtonText,
-                    isSelected ? styles.selectedButtonText : null,
-                ]}
-            >
-                {category}
+            <Ionicons
+                name={category.icon}
+                size={24}
+                color={
+                    isSelected 
+                    ? Colors.color_white 
+                    : Colors.color_blue
+                }
+                style={styles.icon}
+            />
+            <Text style={[
+                styles.text, 
+                isSelected ? styles.selectedText : null]}>
+                {category.name}
             </Text>
         </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
-    categoryButton: {
+    button: {
+        flexDirection: "row",
+        alignItems: "center",
         paddingVertical: 10,
-        paddingHorizontal:8,
+        paddingHorizontal: 8,
         marginHorizontal: 8,
         borderRadius: 10,
         borderColor: Colors.color_blue,
@@ -35,12 +42,15 @@ const styles = StyleSheet.create({
     selectedButton: {
         backgroundColor: Colors.color_blue,
     },
-    ButtonText: {
+    text: {
         color: Colors.color_blue,
     },
-    selectedButtonText: {
-        color: "white",
-        fontFamily: "Mulish-Medium"
+    selectedText: {
+        color: Colors.color_white,
+        fontFamily: "Mulish-Medium",
+    },
+    icon: {
+        marginRight: 4,
     },
 });
 

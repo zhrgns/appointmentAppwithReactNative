@@ -14,10 +14,9 @@ export default function SearchBar(props) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: Colors.color_white,
-        padding:8,
+        padding:10,
         borderColor:Colors.color_light_gray,
-        borderWidth:2,
-        borderRadius:20,
-        marginVertical:12,
+        borderWidth:1,
+        borderRadius:30,
     },
 });
