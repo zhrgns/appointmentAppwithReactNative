@@ -1,12 +1,13 @@
 import React from "react";
 import {StyleSheet, TextInput, View } from "react-native";
+import Colors from "../utils/Colors";
 
 
 export default function InputBar(props) {
 
     return (
         <View style={styles.container}>
-            <TextInput style= {{fontSize:14}} 
+            <TextInput style= {{fontSize:14, fontFamily: "Mulish-Medium"}} 
             placeholder={props.placeholder}
             placeholderTextColor="#d9d9d9"
             onChangeText={props.onType}
@@ -20,10 +21,10 @@ export default function InputBar(props) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#fff",
-        padding:16,
-        borderColor:"#e6e6e6",
+        padding:10,
+        borderColor: Colors.color_light_gray,
         borderWidth:2,
         borderRadius:20,
-        marginVertical:12,
+        marginVertical:8,
     }
 });
