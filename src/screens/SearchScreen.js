@@ -2,14 +2,26 @@ import React, { useState } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 import CardMedium from "../components/CardMedium";
 import mock_data from "./data.json";
-// import { useFonts } from "expo-font";
 import SearchBar from "../components/SearchBar";
-
+import { getDatabase, ref, child, get } from "firebase/database";
 
 export default function SearchScreen({ navigation }) {
-
-
     const [mock_list, setList] = useState(mock_data);
+
+
+    const dbRef = ref(getDatabase());
+        get(child(dbRef, `services`))
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                console.log(snapshot.val());
+                
+            } else {
+                console.log("No data available");
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 
     //Read mock json
     const renderService = ({ item }) => (
@@ -20,8 +32,22 @@ export default function SearchScreen({ navigation }) {
         />
     );
 
-    const handleServiceSelect = item => {
-        navigation.navigate("ServiceDetailScreen", {item});
+    const handleServiceSelect = (item) => {
+        
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, `services/${item.id}`))
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                console.log(snapshot.val());
+            } else {
+                console.log("No data available");
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+        
+        navigation.navigate("ServiceDetailScreen", { item });
     };
 
     //Search function

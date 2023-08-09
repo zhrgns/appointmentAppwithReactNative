@@ -8,8 +8,7 @@ import {
     FlatList,
     ScrollView,
 } from "react-native";
-// import Button from "../components/Button";
-import { Button } from "../components";
+import Button from "../components/Button/Button";
 
 const deviceSize = Dimensions.get("window");
 
