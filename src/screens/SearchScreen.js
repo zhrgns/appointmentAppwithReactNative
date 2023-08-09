@@ -36,13 +36,19 @@ export default function SearchScreen({ navigation }) {
             });
     }, []);
 
+    //filtering by category name
     const handleCategoryFilter = (category) => {
-        const filteredList = filterServicesByCategory(category, serviceList);
-        setSelectedCategory(category);
-        setFilteredServiceList(filteredList);
+        if (selectedCategory === category) {
+            setSelectedCategory(""); // Eğer zaten seçiliyse, seçili kategoriyi temizle
+            setFilteredServiceList(serviceList); // Filtrelemeyi kaldır, tüm hizmetleri göster
+        } else {
+            const filteredList = filterServicesByCategory(category, serviceList);
+            setSelectedCategory(category);
+            setFilteredServiceList(filteredList);
+        }
     };
 
-    //Read mock json
+    //Render to flatlist
     const renderService = ({ item }) => (
         <CardMedium
             image_source={require("../../assets/user-profile.png")}
@@ -51,6 +57,15 @@ export default function SearchScreen({ navigation }) {
         />
     );
 
+    const renderCategory = ({ item }) => (
+        <Category
+            category={item}
+            isSelected={selectedCategory === item.name}
+            onPress={() => handleCategoryFilter(item.name)}
+        />
+    )
+
+    //Navigate to detail
     const handleServiceSelect = (item) => {
         navigation.navigate("ServiceDetailScreen", { item });
     };
@@ -83,31 +98,28 @@ export default function SearchScreen({ navigation }) {
                     color={Colors.color_blue}
                 />
             ) : (
-                <View>
+                <View style={styles.container}>
                     <View style={styles.search_container}>
                         <SearchBar onSearch={handleSearch} />
                     </View>
 
-                    <View  style={styles.category_container}>
+                    <View style={styles.category_container}>
                         <FlatList
                             horizontal
                             data={categories}
-                            renderItem={({ item }) => (
-                                <Category
-                                    category={item}
-                                    isSelected={selectedCategory === item}
-                                    onPress={() => handleCategoryFilter(item)}
-                                />
-                            )}
-                            keyExtractor={(item) => item}
+                            keyExtractor={(category) => category}
+                            renderItem={renderCategory}
                         />
                     </View>
 
-                    <FlatList
-                        data={filteredServiceList}
-                        renderItem={renderService}
-                        keyExtractor={(item) => item.id.toString()}
-                    />
+                    <View style={styles.list_container}>
+                        <FlatList
+                            data={filteredServiceList}
+                            renderItem={renderService}
+                            keyExtractor={(item) => item.id.toString()}
+                        />
+                    </View>
+    
                 </View>
             )}
         </View>
@@ -124,6 +136,10 @@ const styles = StyleSheet.create({
     },
     category_container: {
         marginHorizontal: 24,
+        marginVertical: 8,
+    },
+    list_container: {
+        marginBottom:32
     },
     loadingIndicator: {
         flex: 1,
