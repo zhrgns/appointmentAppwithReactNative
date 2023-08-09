@@ -6,13 +6,10 @@ import {
     View,
     TouchableWithoutFeedback,
 } from "react-native";
-// import { useFonts } from "expo-font";
+import Colors from "../utils/Colors";
 
 export default function CardMedium(props) {
-    // const [fontsLoaded] = useFonts({
-    //     "Mulish-Light": require('../../assets/fonts/Mulish-Light.ttf'),
-    //     "Mulish-Medium": require('../../assets/fonts/Mulish-Medium.ttf'),
-    //   });
+
 
     return (
         <TouchableWithoutFeedback onPress={props.onSelect}>
@@ -51,7 +48,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
         backgroundColor: "#fff",
         padding: 16,
-        borderColor: "#e6e6e6",
+        borderColor: Colors.color_light_gray,
         borderWidth: 2,
         flexDirection: "row",
         borderRadius: 20,
@@ -80,6 +77,6 @@ const styles = StyleSheet.create({
     },
     desc: {
         fontSize: 14,
-        fontWeight: "300",
+        fontFamily: "Mulish-Light"
     },
 });
