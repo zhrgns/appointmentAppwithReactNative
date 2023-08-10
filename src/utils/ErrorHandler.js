@@ -1,3 +1,5 @@
+import { showMessage } from "react-native-flash-message";
+
 export default function (errorCode) {
     switch (errorCode) {
         case "auth/invalid-email":
@@ -25,4 +27,11 @@ export default function (errorCode) {
         default:
             return errorCode;
     }
+}
+
+export function showTopMessage(messageText, messageType) {
+    showMessage({
+        message: messageText,
+        type: messageType,
+    });
 }
