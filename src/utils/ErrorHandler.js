@@ -20,7 +20,8 @@ export default function (errorCode) {
 
         case "auth/missing-password":
             return "Parola boş bırakılamaz";
-            
+        case "auth/missing-email":
+            return "Email boş bırakılamaz";
         default:
             return errorCode;
     }
