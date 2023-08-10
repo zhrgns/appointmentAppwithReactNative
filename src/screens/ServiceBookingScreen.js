@@ -12,6 +12,8 @@ import { Calendar } from "react-native-calendars";
 import moment from "moment";
 import Colors from "../utils/Colors";
 import { getAuth } from "firebase/auth";
+import { getDatabase, push, ref } from "firebase/database";
+import { showTopMessage } from "../utils/ErrorHandler";
 
 export default function ServiceBookingScreen({ route, navigation }) {
     const { item } = route.params;
@@ -24,41 +26,58 @@ export default function ServiceBookingScreen({ route, navigation }) {
     const auth = getAuth();
     const user = auth.currentUser;
 
-    const handleBooking = (navigation) => {
+    const handleBooking = () => {
         if (selectedDate && selectedTime && user) {
-            console.log("booked", { selectedDate, selectedTime, item});
-            goToCompletedScreen();
-            setSelectedTime(null);
-            setSelectedDate(null);
+            const userId = user.uid;
+            const providerId = item.id;
+            const appType = item.expert_area;
+            const bookedDate = selectedDate;
+            const bookedTime = selectedTime;
+
+            const appointmentsRef = ref(getDatabase(), "userAppointments");
+
+            push(appointmentsRef, {
+                userId,
+                providerId,
+                appType,
+                bookedDate,
+                bookedTime,
+            })
+                .then(() => {
+                    showTopMessage("Randevunuz oluşturuldu!", "success");
+
+                    goToCompletedScreen();
+                    setSelectedTime(null);
+                    setSelectedDate(null);
+                })
+                .catch((error) => {
+                    showTopMessage("Bir hata oluştu.", "info");
+                    setSelectedTime(null);
+                    setSelectedDate(null);
+                });
         } else {
-            console.log("can not booked", { selectedDate, selectedTime});
-            if (!selectedDate) {
-                console.log("Please select a date.");
-            }
-            if (!selectedTime) {
-                console.log("Please select a time.");
-            }
             if (!user) {
+                showTopMessage("Kullanıcı girişi yapmadınız", "success");
                 goToLoginScreen();
+            } else if (!selectedDate || !selectedTime) {
+                showTopMessage("Lütfen bir gün ve bir saat seçin.", "info");
             }
         }
     };
 
     const onDateSelect = (day) => {
-        setSelectedDate(day);
-        console.log(day);
+        setSelectedDate(day.dateString);
     };
 
     const onTimeSelect = (time) => {
         setSelectedTime(time);
-        console.log(time);
     };
 
-    const goToCompletedScreen = (item) => {
-        navigation.navigate("SearchScreen", { item });
+    const goToCompletedScreen = () => {
+        navigation.navigate("SearchScreen");
     };
 
-    const goToLoginScreen =() => {
+    const goToLoginScreen = () => {
         navigation.navigate("LoginScreen");
     };
 
@@ -91,8 +110,9 @@ export default function ServiceBookingScreen({ route, navigation }) {
                         [selectedDate]: {
                             selected: true,
                             disableTouchEvent: true,
-                            selectedColor: "#1976d2",
-                            selectedTextColor: "white",
+                            selectedColor: Colors.color_blue,
+                            selectedTextColor: Colors.color_white,
+                            
                         },
                     }}
                     minDate={today}
@@ -102,27 +122,16 @@ export default function ServiceBookingScreen({ route, navigation }) {
                 {selectedDate && (
                     <View>
                         <Text style={styles.subTitle}>Saat Seçin:</Text>
+
                         <View style={styles.date_container}>
                             <TouchableOpacity
                                 style={[
-                                    styles.timeSlots,
                                     selectedTime === "09:00 - 10:00" &&
                                         styles.selectedTime,
                                 ]}
                                 onPress={() => onTimeSelect("09:00 - 10:00")}
                             >
                                 <Text>09:00 - 10:00</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                style={[
-                                    styles.timeSlots,
-                                    selectedTime === "10:00 - 11:00" &&
-                                        styles.selectedTime,
-                                ]}
-                                onPress={() => onTimeSelect("10:00 - 11:00")}
-                            >
-                                <Text>10:00 - 11:00</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

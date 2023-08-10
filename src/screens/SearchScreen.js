@@ -8,8 +8,10 @@ import ParseContentData from "../utils/ParseContentData";
 import { filterServicesByCategory } from "../utils/CategoryUtils";
 import categories from "../utils/Categories";
 import Category from "../components/Category";
+import { showTopMessage } from "../utils/ErrorHandler";
 
 export default function SearchScreen({ navigation }) {
+
     const [loading, setLoading] = useState(true);
     const [serviceList, setServiceList] = useState([]);
     const [filteredServiceList, setFilteredServiceList] = useState([]);
@@ -25,7 +27,7 @@ export default function SearchScreen({ navigation }) {
                     setServiceList(serviceList);
                     setFilteredServiceList(serviceList);
                 } else {
-                    console.log("No data available");
+                    showTopMessage("Gösterecek veri yok", "info")
                 }
             })
             .catch((error) => {

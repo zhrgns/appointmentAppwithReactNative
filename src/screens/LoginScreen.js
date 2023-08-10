@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Button from "../components/button/Button";
 import InputBar from "../components/InputBar";
-import { getAuth, signOut, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "../../firebaseConfig";
 import { Formik } from "formik";
-import { showMessage } from "react-native-flash-message";
-import ErrorHandler from "../utils/ErrorHandler";
+import ErrorHandler, { showTopMessage } from "../utils/ErrorHandler";
 
 const initialFormValues = {
     usermail: "",
@@ -27,15 +26,14 @@ const LoginScreen = ({ navigation }) => {
             formValues.password
         )
             .then((res) => {
-                showMessage({ message: "Giriş Başarılı !", type: "success" });
+                showTopMessage("Giriş Başarılı !", "success");
                 setLoading(false); // İşlem tamamlandığında yüklemeyi devre dışı bırak
                 goToUserProfile();
             })
             .catch((err) => {
                 setLoading(false);
-                showMessage({ message: ErrorHandler(err.code), type: "danger" })
-            }
-            );
+                showTopMessage(ErrorHandler(err.code), "danger");
+            });
     }
 
     // Navigation

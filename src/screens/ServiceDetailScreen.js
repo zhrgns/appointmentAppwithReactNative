@@ -48,7 +48,7 @@ export default function ServiceDetailScreen({ route, navigation }) {
                 {/* Body */}
                 <View style={styles.body_container}>
                     <View style={styles.title_container}>
-                        <Text style={styles.info}>About</Text>
+                        <Text style={styles.about}>About</Text>
 
                         <FlatList
                             data={item.skills}
@@ -58,21 +58,23 @@ export default function ServiceDetailScreen({ route, navigation }) {
                             ItemSeparatorComponent={divider}
                         />
 
-                        <Text style={styles.desc}>
-                            LOREM IPSUM
-                        </Text>
+                        <Text style={styles.desc}>LOREM IPSUM</Text>
                     </View>
                 </View>
 
-                <View style={styles.info_container}>
-                    <Text style={styles.details}>
-                        {" "}
-                        {item.experience}+ Deneyim
-                    </Text>
-                    <Text style={styles.details}>
-                        {" "}
-                        {item.numberOf_books} Tamamlanmış Randevu
-                    </Text>
+                <View style={styles.detail_container}>
+                    <View style={styles.detail}>
+                        <Text style={styles.detail_text}>
+                            {" "}
+                            {item.experience}+ Deneyim
+                        </Text>
+                    </View>
+                    <View style={styles.detail}>
+                        <Text style={styles.detail_text}>
+                            {" "}
+                            {item.numberOf_books} Tamamlanmış Randevu
+                        </Text>
+                    </View>
                 </View>
             </ScrollView>
 
@@ -86,8 +88,10 @@ export default function ServiceDetailScreen({ route, navigation }) {
     );
 }
 
+const windowWidth = Dimensions.get("window").width;
+
 const styles = StyleSheet.create({
-    out_container: { flex: 1},
+    out_container: { flex: 1 },
     container: {
         flexGrow: 1,
         marginTop: 48,
@@ -99,7 +103,7 @@ const styles = StyleSheet.create({
         marginTop: 24,
         padding: 16,
         borderRadius: 20,
-        borderColor:Colors.color_light_gray,
+        borderColor: Colors.color_light_gray,
         borderWidth: 2,
         justifyContent: "center",
     },
@@ -128,36 +132,39 @@ const styles = StyleSheet.create({
     button_container: {
         flexDirection: "row",
         marginVertical: 16,
-        bottom:0
+        bottom: 0,
     },
     title: {
         fontSize: 24,
-        fontFamily:"Mulish-Light"
+        fontFamily: "Mulish-Light",
     },
-    info: {
+    about: {
         fontSize: 20,
-        fontFamily:"Mulish-Light"
+        fontFamily: "Mulish-Light",
     },
-    details: {
+    detail_container: {
         flex: 1,
-        fontWeight: "300",
-        marginVertical: 24,
-        padding: 8,
-        fontSize: 20,
-        textAlign: "center",
-        marginHorizontal: 16,
-        borderRadius: 20,
-        borderWidth: 2,
-        borderColor: Colors.color_light_gray,
-        width: deviceSize.width / 2 - 60,
-        height: deviceSize.width / 2 - 60,
-        alignItems: "center",
-        fontFamily:"Mulish-Light"
-    },
-    info_container: {
         flexDirection: "row",
         alignItems: "center",
-
+        marginVertical: 24,
+        justifyContent:"space-between"
+    },
+    detail: {
+        flex:1,
+        flexDirection: "row",
+        alignItems: "center",
+        borderRadius: 20,
+        borderWidth: 2,
+        marginHorizontal:12,
+        borderColor: Colors.color_light_gray,
+        height: windowWidth / 3,
+        justifyContent: "center",
+        backgroundColor:Colors.color_white
+    },
+    detail_text: {
+        textAlign: "center",
+        fontSize: 20,
+        fontFamily: "Mulish-Medium",
     },
     chips: {
         borderRadius: 20,
@@ -167,13 +174,13 @@ const styles = StyleSheet.create({
         marginVertical: 24,
         padding: 8,
         borderRadius: 16,
-        fontFamily:"Mulish-Light"
+        fontFamily: "Mulish-Light",
     },
     desc: {
         fontSize: 14,
         fontWeight: "300",
         padding: 8,
-        fontFamily:"Mulish-Light"
+        fontFamily: "Mulish-Light",
     },
     divider: {
         marginHorizontal: 4,
