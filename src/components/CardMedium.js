@@ -8,26 +8,24 @@ import {
 } from "react-native";
 import Colors from "../utils/Colors";
 
-export default function CardMedium(props) {
-
-
+export default function CardMedium({ service, onSelect, image_source }) {
     return (
-        <TouchableWithoutFeedback onPress={props.onSelect}>
+        <TouchableWithoutFeedback onPress={onSelect}>
             <View style={styles.card}>
-                <Image source={props.image_source} style={styles.image} />
+                <Image source={image_source} style={styles.image} />
                 <View style={styles.text_container}>
                     <View style={styles.title_container}>
                         <Text style={styles.title}>
-                            {props.service.firstName} {props.service.lastName}
+                            {service.firstName} {service.lastName}
                         </Text>
                         <Text style={styles.desc}>
-                            {props.service.expert_area},{" "}
-                            {props.service.district}
+                            {service.expert_area}, {service.district}
                         </Text>
                     </View>
-                    <View style={styles.detail_container}>
+                    <View>
                         <Text style={styles.desc}>
-                            {props.service.numberOf_books} T. Randevu, {props.service.experience} Yıl Deneyim
+                            {service.numberOf_books} T. Randevu,{" "}
+                            {service.experience} Yıl Deneyim
                         </Text>
                     </View>
                 </View>
@@ -66,15 +64,12 @@ const styles = StyleSheet.create({
     title_container: {
         flex: 1,
     },
-    detail_container_container: {
-        flex: 1, flexDirection:"row-reverse"
-    },
     title: {
         fontSize: 18,
-        fontFamily: "Mulish-Medium"
+        fontFamily: "Mulish-Medium",
     },
     desc: {
         fontSize: 14,
-        fontFamily: "Mulish-Light"
+        fontFamily: "Mulish-Light",
     },
 });

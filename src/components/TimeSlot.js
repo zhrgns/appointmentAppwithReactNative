@@ -1,63 +1,50 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet, Dimensions } from "react-native";
 import Colors from "../utils/Colors";
-import { Ionicons } from "@expo/vector-icons";
 
 const windowWidth = Dimensions.get("window").width;
 
-const Category = ({ category, isSelected, onPress }) => {
+const TimeSlot = (timeslot,onPress) => {
     return (
         <TouchableOpacity
-            style={[styles.button, isSelected ? styles.selectedButton : null]}
-            onPress={onPress}
-        >
-            <Ionicons
-                name={category.icon}
-                size={36}
-                color={
-                    isSelected 
-                    ? Colors.color_white 
-                    : Colors.color_blue
-                }
-                style={styles.icon}
-            />
+            style={[styles.container, isSelected ? styles.selectedButton : null]}
+            onPress={onPress}>
             <Text style={[
                 styles.text, 
                 isSelected ? styles.selectedText : null]}>
-                {category.name}
+                {timeslot.apptime}
             </Text>
         </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
-    button: {
+    container: {
+        flex:1,
+        flexDirection:"row",
         alignItems: "center",
         padding: 16,
         marginHorizontal: 8,
-        borderRadius: 10,
+        borderRadius: 20,
         borderColor: Colors.color_blue,
         borderWidth: 1,
-        width: windowWidth / 4,
-        height: windowWidth / 4,
+        width: windowWidth / 2,
         justifyContent:"center"
     },
     selectedButton: {
         backgroundColor: Colors.color_blue,
     },
     text: {
+        justifyContent:"center",
         color: Colors.color_blue,
         fontSize:14,
         fontFamily: "Mulish-Medium",
-        textAlign:  "center"
     },
     selectedText: {
+        justifyContent:"center",
         color: Colors.color_white,
         fontFamily: "Mulish-Medium",
     },
-    icon: {
-        flex:1,
-    },
 });
 
-export default Category;
+export default TimeSlot;
