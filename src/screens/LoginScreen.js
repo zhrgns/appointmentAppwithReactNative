@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import Button from "../components/Button/Button";
+import Button from "../components/button/Button";
 import InputBar from "../components/InputBar";
 import { getAuth, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import app from "../../firebaseConfig";
@@ -19,29 +19,35 @@ const LoginScreen = ({ navigation }) => {
     function handleFormSubmit(formValues) {
         const auth = getAuth(app);
 
+        setLoading(true); // İşlem başladığında yüklemeyi etkinleştir
+
         signInWithEmailAndPassword(
             auth,
             formValues.usermail,
             formValues.password
         )
-            .then((res) =>
-                showMessage({ message: "Giriş Başarılı !", type: "success" })
-            )
-            .catch((err) => showMessage({ message: ErrorHandler(err.code), type: "danger" }));
+            .then((res) => {
+                showMessage({ message: "Giriş Başarılı !", type: "success" });
+                setLoading(false); // İşlem tamamlandığında yüklemeyi devre dışı bırak
+                goToUserProfile();
+            })
+            .catch((err) => {
+                setLoading(false);
+                showMessage({ message: ErrorHandler(err.code), type: "danger" })
+            }
+            );
     }
-    
-    // Use it later
-    // function handleSignOut() {
-    //     const auth = getAuth(app);
-    //     signOut(auth)
-    //         .then((res) => console.log("Çıkış yaptı"))
-    //         .catch((err) => console.log(err));
-    // }
 
     // Navigation
 
     function goToMemberSignUp() {
         navigation.navigate("SignUpScreen");
+    }
+
+    // Navigation
+
+    function goToUserProfile() {
+        navigation.navigate("UserProfileScreen");
     }
 
     return (
@@ -81,9 +87,6 @@ const LoginScreen = ({ navigation }) => {
                     </>
                 )}
             </Formik>
-            {/* <View style={styles.button_container}>
-                <Button text="çıkış Yap" onPress={handleSignOut} />
-            </View> */}
         </View>
     );
 };
@@ -98,6 +101,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 24,
         marginVertical: 32,
         fontSize: 30,
+        fontFamily: "Mulish-Medium",
     },
     input_container: {
         marginHorizontal: 24,

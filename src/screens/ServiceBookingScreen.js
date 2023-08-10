@@ -4,63 +4,48 @@ import {
     Text,
     Image,
     ScrollView,
-    Modal,
     TouchableOpacity,
 } from "react-native";
-import Button from "../components/Button/Button";
+import Button from "../components/button/Button";
 import React, { useState } from "react";
-import { Calendar, LocaleConfig } from "react-native-calendars";
+import { Calendar } from "react-native-calendars";
 import moment from "moment";
+import Colors from "../utils/Colors";
+import { getAuth } from "firebase/auth";
 
-export default function ServiceBookingScreen({ route }) {
+export default function ServiceBookingScreen({ route, navigation }) {
+    const { item } = route.params;
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
 
-    LocaleConfig.locales["tr"] = {
-        monthNames: [
-            "Ocak",
-            "Şubat",
-            "Mart",
-            "Nisan",
-            "Mayıs",
-            "Haziran",
-            "Temmuz",
-            "Ağustos",
-            "Eylül",
-            "Ekim",
-            "Kasım",
-            "Aralık",
-        ],
-        monthNamesShort: [
-            "Oca",
-            "Şub",
-            "Mar",
-            "Nis",
-            "May",
-            "Haz",
-            "Tem",
-            "Ağu",
-            "Eyl",
-            "Eki",
-            "Kas",
-            "Ara",
-        ],
-        dayNames: [
-            "Pazartesi",
-            "Salı",
-            "Çarşamba",
-            "Perşembe",
-            "Cuma",
-            "Cumartesi",
-            "Pazar",
-        ],
-        dayNamesShort: ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
-        today: "Bugün",
+    const today = moment().format("YYYY-MM-DD");
+    const threeMonthsLater = moment().add(3, "months").format("YYYY-MM-DD");
+
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    const handleBooking = (navigation) => {
+        if (selectedDate && selectedTime && user) {
+            console.log("booked", { selectedDate, selectedTime, item});
+            goToCompletedScreen();
+            setSelectedTime(null);
+            setSelectedDate(null);
+        } else {
+            console.log("can not booked", { selectedDate, selectedTime});
+            if (!selectedDate) {
+                console.log("Please select a date.");
+            }
+            if (!selectedTime) {
+                console.log("Please select a time.");
+            }
+            if (!user) {
+                goToLoginScreen();
+            }
+        }
     };
-    LocaleConfig.defaultLocale = "tr";
 
     const onDateSelect = (day) => {
-        setSelectedDate(day.dateString);
+        setSelectedDate(day);
         console.log(day);
     };
 
@@ -69,112 +54,117 @@ export default function ServiceBookingScreen({ route }) {
         console.log(time);
     };
 
-    const today = moment().format("YYYY-MM-DD");
-    const threeMonthsLater = moment().add(3, "months").format("YYYY-MM-DD");
+    const goToCompletedScreen = (item) => {
+        navigation.navigate("SearchScreen", { item });
+    };
 
-    const { item } = route.params;
+    const goToLoginScreen =() => {
+        navigation.navigate("LoginScreen");
+    };
 
     return (
-        <ScrollView style={styles.container}>
-            {/* Header */}
-            <View style={styles.header_container}>
-                <Image
-                    style={styles.image_container}
-                    source={require("../../assets/user-profile.png")}
-                />
-                <View style={styles.title_container}>
-                    <Text style={styles.title}>
-                        {item.firstName} {item.lastName}
-                    </Text>
-                    <Text style={styles.desc}>
-                        {item.expert_area}, {item.district}
-                    </Text>
-                </View>
-            </View>
-
-            <Text style={styles.subTitle}>Gün Seçin:</Text>
-
-            {/* Calendar */}
-            <Calendar
-                style={styles.calendar_container}
-                onDayPress={onDateSelect}
-                markedDates={{
-                    [selectedDate]: {
-                        selected: true,
-                        disableTouchEvent: true,
-                        selectedColor: "#1976d2",
-                        selectedTextColor: "white",
-                    },
-                }}
-                minDate={today}
-                maxDate={threeMonthsLater}
-            />
-            {/* Visible when a day has chosen */}
-            {selectedDate && (
-                <View>
-                    <Text style={styles.subTitle}>Saat Seçin:</Text>
-                    <View style={styles.date_container}>
-                        <TouchableOpacity
-                            style={[
-                                styles.timeSlots,
-                                selectedTime === "09:00 - 10:00" &&
-                                    styles.selectedTime,
-                            ]}
-                            onPress={() => onTimeSelect("09:00 - 10:00")}
-                        >
-                            <Text>09:00 - 10:00</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={[
-                                styles.timeSlots,
-                                selectedTime === "10:00 - 11:00" &&
-                                    styles.selectedTime,
-                            ]}
-                            onPress={() => onTimeSelect("10:00 - 11:00")}
-                        >
-                            <Text>10:00 - 11:00</Text>
-                        </TouchableOpacity>
+        <View style={styles.out_container}>
+            <ScrollView style={styles.container}>
+                {/* Header */}
+                <View style={styles.header_container}>
+                    <Image
+                        style={styles.image_container}
+                        source={require("../../assets/user-profile.png")}
+                    />
+                    <View style={styles.title_container}>
+                        <Text style={styles.title}>
+                            {item.firstName} {item.lastName}
+                        </Text>
+                        <Text style={styles.desc}>
+                            {item.expert_area}, {item.district}
+                        </Text>
                     </View>
                 </View>
-            )}
 
+                <Text style={styles.subTitle}>Gün Seçin:</Text>
+
+                {/* Calendar */}
+                <Calendar
+                    style={styles.calendar_container}
+                    onDayPress={onDateSelect}
+                    markedDates={{
+                        [selectedDate]: {
+                            selected: true,
+                            disableTouchEvent: true,
+                            selectedColor: "#1976d2",
+                            selectedTextColor: "white",
+                        },
+                    }}
+                    minDate={today}
+                    maxDate={threeMonthsLater}
+                />
+                {/* Visible when a day has chosen */}
+                {selectedDate && (
+                    <View>
+                        <Text style={styles.subTitle}>Saat Seçin:</Text>
+                        <View style={styles.date_container}>
+                            <TouchableOpacity
+                                style={[
+                                    styles.timeSlots,
+                                    selectedTime === "09:00 - 10:00" &&
+                                        styles.selectedTime,
+                                ]}
+                                onPress={() => onTimeSelect("09:00 - 10:00")}
+                            >
+                                <Text>09:00 - 10:00</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={[
+                                    styles.timeSlots,
+                                    selectedTime === "10:00 - 11:00" &&
+                                        styles.selectedTime,
+                                ]}
+                                onPress={() => onTimeSelect("10:00 - 11:00")}
+                            >
+                                <Text>10:00 - 11:00</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                )}
+            </ScrollView>
             <View style={styles.button_container}>
-                <Button text={"Tamamla"} />
+                <Button text={"Tamamla"} onPress={handleBooking} />
             </View>
-        </ScrollView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+    out_container: { flex: 1 },
     container: {
-        flex: 1,
+        flexGrow: 1,
         marginTop: 48,
-        marginHorizontal: 24,
+        paddingHorizontal: 24,
     },
     header_container: {
         flexDirection: "row",
-        backgroundColor: "#fff",
+        backgroundColor: Colors.color_white,
         marginTop: 24,
         padding: 16,
         borderRadius: 20,
-        borderColor: "#e6e6e6",
+        borderColor: Colors.color_light_gray,
         borderWidth: 2,
         justifyContent: "center",
     },
     date_container: {
-        backgroundColor: "#fff",
+        backgroundColor: Colors.color_white,
         flexDirection: "row",
         padding: 16,
         borderRadius: 20,
-        borderColor: "#e6e6e6",
+        borderColor: Colors.color_light_gray,
         borderWidth: 2,
         justifyContent: "center",
     },
     calendar_container: {
         padding: 16,
         borderRadius: 20,
-        borderColor: "#e6e6e6",
+        borderColor: Colors.color_light_gray,
         borderWidth: 2,
         justifyContent: "center",
     },

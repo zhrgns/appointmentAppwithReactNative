@@ -4,10 +4,7 @@ import { View, Text } from "react-native";
 import { useFonts } from 'expo-font';
 
 export default function CalendarScreen() {
-//   const [fontsLoaded] = useFonts({
-//     "Mulish-Light": require('../../assets/fonts/Mulish-Light.ttf'),
-//     "Mulish-Medium": require("../../assets/fonts/Mulish-Medium.ttf"),
-//   });
+
 
     return (
         <View 

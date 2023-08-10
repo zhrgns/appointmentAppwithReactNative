@@ -8,7 +8,8 @@ import {
     FlatList,
     ScrollView,
 } from "react-native";
-import Button from "../components/Button/Button";
+import Button from "../components/button/Button";
+import Colors from "../utils/Colors";
 
 const deviceSize = Dimensions.get("window");
 
@@ -58,12 +59,7 @@ export default function ServiceDetailScreen({ route, navigation }) {
                         />
 
                         <Text style={styles.desc}>
-                            Ayşe Yılmaz, Kadıköy'de sağlık uzmanı olarak çalışan
-                            bir profesyoneldir. X-ray incelemesi, kan tahlili ve
-                            ilk yardım uygulamalarında uzmandır. Empati ve bilgi
-                            birikimiyle hastalarına güven verir ve toplum
-                            sağlığını desteklemek için tutkulu bir şekilde
-                            çalışır.
+                            LOREM IPSUM
                         </Text>
                     </View>
                 </View>
@@ -93,7 +89,6 @@ export default function ServiceDetailScreen({ route, navigation }) {
 const styles = StyleSheet.create({
     out_container: { flex: 1},
     container: {
-        flex: 1,
         flexGrow: 1,
         marginTop: 48,
         paddingHorizontal: 24,
@@ -104,7 +99,7 @@ const styles = StyleSheet.create({
         marginTop: 24,
         padding: 16,
         borderRadius: 20,
-        borderColor: "#e6e6e6",
+        borderColor:Colors.color_light_gray,
         borderWidth: 2,
         justifyContent: "center",
     },
@@ -115,7 +110,7 @@ const styles = StyleSheet.create({
         padding: 16,
         borderRadius: 20,
 
-        borderColor: "#e6e6e6",
+        borderColor: Colors.color_light_gray,
         borderWidth: 2,
         justifyContent: "center",
     },
@@ -133,12 +128,15 @@ const styles = StyleSheet.create({
     button_container: {
         flexDirection: "row",
         marginVertical: 16,
+        bottom:0
     },
     title: {
         fontSize: 24,
+        fontFamily:"Mulish-Light"
     },
     info: {
         fontSize: 20,
+        fontFamily:"Mulish-Light"
     },
     details: {
         flex: 1,
@@ -150,14 +148,16 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
         borderRadius: 20,
         borderWidth: 2,
-        borderColor: "#e6e6e6",
+        borderColor: Colors.color_light_gray,
         width: deviceSize.width / 2 - 60,
         height: deviceSize.width / 2 - 60,
         alignItems: "center",
+        fontFamily:"Mulish-Light"
     },
     info_container: {
         flexDirection: "row",
         alignItems: "center",
+
     },
     chips: {
         borderRadius: 20,
@@ -167,11 +167,13 @@ const styles = StyleSheet.create({
         marginVertical: 24,
         padding: 8,
         borderRadius: 16,
+        fontFamily:"Mulish-Light"
     },
     desc: {
         fontSize: 14,
         fontWeight: "300",
         padding: 8,
+        fontFamily:"Mulish-Light"
     },
     divider: {
         marginHorizontal: 4,

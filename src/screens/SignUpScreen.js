@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import Button from "../components/Button/Button";
+import Button from "../components/button/Button";
 import InputBar from "../components/InputBar";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import app from "../../firebaseConfig";
@@ -106,13 +106,13 @@ export default function SignUpScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
         marginTop: 48,
     },
     text: {
         marginHorizontal: 24,
         marginVertical: 32,
         fontSize: 30,
+        fontFamily: "Mulish-Medium",
     },
     input_container: {
         marginHorizontal: 24,
