@@ -131,8 +131,8 @@ const styles = StyleSheet.create({
     },
     button_container: {
         flexDirection: "row",
-        marginVertical: 16,
-        bottom: 0,
+        marginBottom:16,
+        marginHorizontal:24
     },
     title: {
         fontSize: 24,

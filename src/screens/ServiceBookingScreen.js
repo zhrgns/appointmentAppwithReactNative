@@ -4,7 +4,6 @@ import {
     Text,
     Image,
     ScrollView,
-    TouchableOpacity,
 } from "react-native";
 import Button from "../components/button/Button";
 import React, { useState } from "react";
@@ -12,11 +11,16 @@ import { Calendar } from "react-native-calendars";
 import moment from "moment";
 import Colors from "../utils/Colors";
 import { getAuth } from "firebase/auth";
-import { getDatabase, push, ref } from "firebase/database";
+import { getDatabase, push, ref, get, child } from "firebase/database";
 import { showTopMessage } from "../utils/ErrorHandler";
+import TimeSlot from "../components/TimeSlot";
+import { useEffect } from "react";
+import ParseContentData from "../utils/ParseContentData";
 
 export default function ServiceBookingScreen({ route, navigation }) {
     const { item } = route.params;
+
+    const [loading, setLoading] = useState(true);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
 
@@ -25,6 +29,29 @@ export default function ServiceBookingScreen({ route, navigation }) {
 
     const auth = getAuth();
     const user = auth.currentUser;
+
+    const [apptimeList, setApptimeList] = useState([]);
+
+    //get times from database
+    useEffect(() => {
+        const dbRef = ref(getDatabase());
+
+        get(child(dbRef, "times"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const apptimeList = ParseContentData(snapshot.val());
+                    setApptimeList(apptimeList);
+                } else {
+                    showTopMessage("Gösterecek veri yok", "info");
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, []);
 
     const handleBooking = () => {
         if (selectedDate && selectedTime && user) {
@@ -81,9 +108,10 @@ export default function ServiceBookingScreen({ route, navigation }) {
         navigation.navigate("LoginScreen");
     };
 
+
     return (
         <View style={styles.out_container}>
-            <ScrollView style={styles.container}>
+            <ScrollView nestedScrollEnabled={true} style={styles.container}>
                 {/* Header */}
                 <View style={styles.header_container}>
                     <Image
@@ -100,9 +128,10 @@ export default function ServiceBookingScreen({ route, navigation }) {
                     </View>
                 </View>
 
-                <Text style={styles.subTitle}>Gün Seçin:</Text>
+                <View style={styles.text_container}>
+                    <Text style={styles.subTitle}>Gün Seçin:</Text>
+                </View>
 
-                {/* Calendar */}
                 <Calendar
                     style={styles.calendar_container}
                     onDayPress={onDateSelect}
@@ -112,27 +141,26 @@ export default function ServiceBookingScreen({ route, navigation }) {
                             disableTouchEvent: true,
                             selectedColor: Colors.color_blue,
                             selectedTextColor: Colors.color_white,
-                            
                         },
                     }}
                     minDate={today}
                     maxDate={threeMonthsLater}
                 />
-                {/* Visible when a day has chosen */}
-                {selectedDate && (
-                    <View>
-                        <Text style={styles.subTitle}>Saat Seçin:</Text>
 
-                        <View style={styles.date_container}>
-                            <TouchableOpacity
-                                style={[
-                                    selectedTime === "09:00 - 10:00" &&
-                                        styles.selectedTime,
-                                ]}
-                                onPress={() => onTimeSelect("09:00 - 10:00")}
-                            >
-                                <Text>09:00 - 10:00</Text>
-                            </TouchableOpacity>
+                {selectedDate && (
+                    <View style={styles.bottom_container}>
+                        <View style={styles.text_container}>
+                            <Text style={styles.subTitle}>Saat Seçin:</Text>
+                        </View>
+                        <View style={styles.time_container}>
+                            {apptimeList.map((time) => (
+                                <TimeSlot
+                                    key={time.id.toString()}
+                                    time={time}
+                                    onPress={onTimeSelect}
+                                    isSelected={selectedTime === time.apptime}
+                                />
+                            ))}
                         </View>
                     </View>
                 )}
@@ -161,18 +189,11 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         justifyContent: "center",
     },
-    date_container: {
-        backgroundColor: Colors.color_white,
-        flexDirection: "row",
-        padding: 16,
-        borderRadius: 20,
-        borderColor: Colors.color_light_gray,
-        borderWidth: 2,
-        justifyContent: "center",
-    },
+
     calendar_container: {
         padding: 16,
         borderRadius: 20,
+        marginBottom: 12,
         borderColor: Colors.color_light_gray,
         borderWidth: 2,
         justifyContent: "center",
@@ -189,11 +210,30 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "space-evenly",
     },
+    text_container: {
+        flex: 1,
+        flexDirection: "row",
+    },
+    time_container: {
+        flexDirection:"row",
+        flexWrap: "wrap",
+        padding: 16,
+        backgroundColor: Colors.color_white,
+        borderRadius: 20,
+        borderWidth: 2,
+        borderColor: Colors.color_light_gray,
+        justifyContent:"space-between"
+    },
+    bottom_container: {
+        flex: 1,
+        marginBottom: 24,
+    },
     button_container: {
         flexDirection: "row",
-        marginVertical: 16,
-        bottom: 0,
+        marginBottom: 16,
+        marginHorizontal: 24,
     },
+
     title: {
         fontSize: 24,
     },
@@ -204,21 +244,6 @@ const styles = StyleSheet.create({
     desc: {
         fontSize: 14,
         fontWeight: "300",
-        padding: 8,
-    },
-    timeSlots: {
-        marginHorizontal: 24,
-        marginVertical: 8,
-        borderWidth: 1,
-        borderColor: "#1976d2",
-        borderRadius: 20,
-        padding: 8,
-        alignSelf: "auto",
-    },
-    selectedTime: {
-        alignSelf: "flex-start",
-        backgroundColor: "#1976d2",
-        color: "#fff",
         padding: 8,
     },
 });

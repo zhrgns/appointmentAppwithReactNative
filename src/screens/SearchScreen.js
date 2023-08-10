@@ -11,7 +11,6 @@ import Category from "../components/Category";
 import { showTopMessage } from "../utils/ErrorHandler";
 
 export default function SearchScreen({ navigation }) {
-
     const [loading, setLoading] = useState(true);
     const [serviceList, setServiceList] = useState([]);
     const [filteredServiceList, setFilteredServiceList] = useState([]);
@@ -27,7 +26,7 @@ export default function SearchScreen({ navigation }) {
                     setServiceList(serviceList);
                     setFilteredServiceList(serviceList);
                 } else {
-                    showTopMessage("Gösterecek veri yok", "info")
+                    showTopMessage("Gösterecek veri yok", "info");
                 }
             })
             .catch((error) => {
@@ -44,7 +43,10 @@ export default function SearchScreen({ navigation }) {
             setSelectedCategory(""); // Eğer zaten seçiliyse, seçili kategoriyi temizle
             setFilteredServiceList(serviceList); // Filtrelemeyi kaldır, tüm hizmetleri göster
         } else {
-            const filteredList = filterServicesByCategory(category, serviceList);
+            const filteredList = filterServicesByCategory(
+                category,
+                serviceList
+            );
             setSelectedCategory(category);
             setFilteredServiceList(filteredList);
         }
@@ -64,9 +66,9 @@ export default function SearchScreen({ navigation }) {
             category={item}
             isSelected={selectedCategory === item.name}
             onPress={() => handleCategoryFilter(item.name)}
-            key = {item.name}
+            key={item.name}
         />
-    )
+    );
 
     //Navigate to detail
     const handleServiceSelect = (item) => {
@@ -122,7 +124,6 @@ export default function SearchScreen({ navigation }) {
                             keyExtractor={(item) => item.id.toString()}
                         />
                     </View>
-    
                 </View>
             )}
         </View>
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
         marginVertical: 8,
     },
     list_container: {
-        marginBottom:32
+        marginBottom: 32,
     },
     loadingIndicator: {
         flex: 1,
