@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "../../firebaseConfig";
 import { Feather } from "@expo/vector-icons";
-import { showMessage } from "react-native-flash-message";
+import { showTopMessage } from "../utils/ErrorHandler";
 
 export default function UserProfileScreen({ navigation }) {
     //sing out user
@@ -13,7 +13,7 @@ export default function UserProfileScreen({ navigation }) {
 
         signOut(auth)
             .then((res) => {
-                showMessage({ message: "Oturum sonlandı", type: "success" });
+                showTopMessage("Oturum sonlandı", "success");
                 goToLogin();
             })
             .catch((err) => console.log(err));

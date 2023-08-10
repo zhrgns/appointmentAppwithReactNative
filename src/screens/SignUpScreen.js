@@ -5,8 +5,7 @@ import InputBar from "../components/InputBar";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import app from "../../firebaseConfig";
 import { Formik } from "formik";
-import { showMessage } from "react-native-flash-message";
-import ErrorHandler from "../utils/ErrorHandler";
+import ErrorHandler, { showTopMessage } from "../utils/ErrorHandler";
 import { ScrollView } from "react-native-gesture-handler";
 
 const initialFormValues = {
@@ -24,10 +23,10 @@ export default function SignUpScreen() {
         setLoading(true);
 
         if (formValues.password != formValues.passwordre) {
-            showMessage({
-                message: "Parola tekrarı uyuşmuyor, tekrar deneyin!",
-                type: "warning",
-            });
+            showTopMessage(
+                "Parola tekrarı uyuşmuyor, tekrar deneyin!",
+                "warning"
+            );
             setLoading(false);
         } else {
             createUserWithEmailAndPassword(
@@ -37,19 +36,13 @@ export default function SignUpScreen() {
             )
                 .then(
                     (res) => {
-                        showMessage({
-                            message: " Kayıt Başarılı !",
-                            type: "success",
-                        });
+                        showTopMessage(" Kayıt Başarılı !", "success");
                         setLoading(false);
                     }
                     //buradan home screene gitmeli veya go back
                 )
                 .catch((err) =>
-                    showMessage({
-                        message: ErrorHandler(err.code),
-                        type: "danger",
-                    })
+                    showTopMessage(ErrorHandler(err.code), "danger")
                 );
 
             setLoading(false);
