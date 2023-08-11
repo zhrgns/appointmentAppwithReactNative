@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 50,
         overflow: "hidden",
-        width: 100,
-        height: 100,
+        width: 72,
+        height: 72,
     },
     text_container: {
         flex: 1,
@@ -71,5 +71,6 @@ const styles = StyleSheet.create({
     desc: {
         fontSize: 14,
         fontFamily: "Mulish-Light",
+        color:Colors.color_gray
     },
 });

@@ -1,10 +1,4 @@
-import {
-    View,
-    StyleSheet,
-    Text,
-    Image,
-    ScrollView,
-} from "react-native";
+import { View, StyleSheet, Text, Image, ScrollView, Alert } from "react-native";
 import Button from "../components/button/Button";
 import React, { useState } from "react";
 import { Calendar } from "react-native-calendars";
@@ -55,33 +49,54 @@ export default function ServiceBookingScreen({ route, navigation }) {
 
     const handleBooking = () => {
         if (selectedDate && selectedTime && user) {
-            const userId = user.uid;
-            const providerId = item.id;
-            const appType = item.expert_area;
-            const bookedDate = selectedDate;
-            const bookedTime = selectedTime;
+            Alert.alert(
+                "Randevu Oluşturma",
+                "Randevunuz oluşturulacakonaylıyor musunuz ?",
+                [
+                    {
+                        text: "Vazgeç",
+                        style: "cancel",
+                    },
+                    {
+                        text: "Tamamla",
+                        onPress: () => {
+                            const userId = user.uid;
+                            const providerId = item.id;
+                            const appType = item.expert_area;
+                            const bookedDate = selectedDate;
+                            const bookedTime = selectedTime;
 
-            const appointmentsRef = ref(getDatabase(), "userAppointments");
+                            const appointmentsRef = ref(
+                                getDatabase(),
+                                "userAppointments/" + user.uid
+                            );
 
-            push(appointmentsRef, {
-                userId,
-                providerId,
-                appType,
-                bookedDate,
-                bookedTime,
-            })
-                .then(() => {
-                    showTopMessage("Randevunuz oluşturuldu!", "success");
+                            push(appointmentsRef, {
+                                userId,
+                                providerId,
+                                appType,
+                                bookedDate,
+                                bookedTime,
+                            })
+                                .then(() => {
+                                    showTopMessage(
+                                        "Randevunuz oluşturuldu!",
+                                        "success"
+                                    );
 
-                    goToCompletedScreen();
-                    setSelectedTime(null);
-                    setSelectedDate(null);
-                })
-                .catch((error) => {
-                    showTopMessage("Bir hata oluştu.", "info");
-                    setSelectedTime(null);
-                    setSelectedDate(null);
-                });
+                                    goToCompletedScreen();
+                                    setSelectedTime(null);
+                                    setSelectedDate(null);
+                                })
+                                .catch((error) => {
+                                    showTopMessage("Bir hata oluştu.", "info");
+                                    setSelectedTime(null);
+                                    setSelectedDate(null);
+                                });
+                        },
+                    },
+                ]
+            );
         } else {
             if (!user) {
                 showTopMessage("Kullanıcı girişi yapmadınız", "success");
@@ -107,7 +122,6 @@ export default function ServiceBookingScreen({ route, navigation }) {
     const goToLoginScreen = () => {
         navigation.navigate("LoginScreen");
     };
-
 
     return (
         <View style={styles.out_container}>
@@ -215,14 +229,14 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     time_container: {
-        flexDirection:"row",
+        flexDirection: "row",
         flexWrap: "wrap",
         padding: 16,
         backgroundColor: Colors.color_white,
         borderRadius: 20,
         borderWidth: 2,
         borderColor: Colors.color_light_gray,
-        justifyContent:"space-between"
+        justifyContent: "space-between",
     },
     bottom_container: {
         flex: 1,

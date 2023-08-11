@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import FlashMessage from "react-native-flash-message";
 import Fonts from "./src/utils/Fonts";
 import Navigation from "./src/components/Navigation";
+import { MenuProvider } from "react-native-popup-menu";
 
 export default function App() {
     const [fontsLoaded] = useFonts(Fonts);
@@ -12,9 +13,11 @@ export default function App() {
         return null;
     }
     return (
-        <NavigationContainer>
-            <Navigation />
-            <FlashMessage position="top"/>
-        </NavigationContainer>
+        <MenuProvider>
+            <NavigationContainer>
+                <Navigation />
+                <FlashMessage position="top" />
+            </NavigationContainer>
+        </MenuProvider>
     );
 }
