@@ -9,7 +9,7 @@ import { getDatabase, push, ref, get, child } from "firebase/database";
 import { showTopMessage } from "../utils/ErrorHandler";
 import TimeSlot from "../components/TimeSlot";
 import { useEffect } from "react";
-import ParseContentData from "../utils/ParseContentData";
+import parseContentData from "../utils/ParseContentData";
 
 export default function ServiceBookingScreen({ route, navigation }) {
     const { item } = route.params;
@@ -33,7 +33,7 @@ export default function ServiceBookingScreen({ route, navigation }) {
         get(child(dbRef, "times"))
             .then((snapshot) => {
                 if (snapshot.exists()) {
-                    const apptimeList = ParseContentData(snapshot.val());
+                    const apptimeList = parseContentData(snapshot.val());
                     setApptimeList(apptimeList);
                 } else {
                     showTopMessage("Gösterecek veri yok", "info");
@@ -60,39 +60,7 @@ export default function ServiceBookingScreen({ route, navigation }) {
                     {
                         text: "Tamamla",
                         onPress: () => {
-                            const userId = user.uid;
-                            const providerId = item.id;
-                            const appType = item.expert_area;
-                            const bookedDate = selectedDate;
-                            const bookedTime = selectedTime;
-
-                            const appointmentsRef = ref(
-                                getDatabase(),
-                                "userAppointments/" + user.uid
-                            );
-
-                            push(appointmentsRef, {
-                                userId,
-                                providerId,
-                                appType,
-                                bookedDate,
-                                bookedTime,
-                            })
-                                .then(() => {
-                                    showTopMessage(
-                                        "Randevunuz oluşturuldu!",
-                                        "success"
-                                    );
-
-                                    goToCompletedScreen();
-                                    setSelectedTime(null);
-                                    setSelectedDate(null);
-                                })
-                                .catch((error) => {
-                                    showTopMessage("Bir hata oluştu.", "info");
-                                    setSelectedTime(null);
-                                    setSelectedDate(null);
-                                });
+                            pushAppointment();
                         },
                     },
                 ]
@@ -105,6 +73,39 @@ export default function ServiceBookingScreen({ route, navigation }) {
                 showTopMessage("Lütfen bir gün ve bir saat seçin.", "info");
             }
         }
+    };
+
+    const pushAppointment = () => {
+        const userId = user.uid;
+        const serviceId = item.id;
+        const appType = item.expert_area;
+        const bookedDate = selectedDate;
+        const bookedTime = selectedTime;
+
+        const appointmentsRef = ref(
+            getDatabase(),
+            "userAppointments/" + user.uid
+        );
+
+        push(appointmentsRef, {
+            userId,
+            serviceId,
+            appType,
+            bookedDate,
+            bookedTime,
+        })
+            .then(() => {
+                showTopMessage("Randevunuz oluşturuldu!", "success");
+
+                goToCompletedScreen();
+                setSelectedTime(null);
+                setSelectedDate(null);
+            })
+            .catch((error) => {
+                showTopMessage("Bir hata oluştu.", "info");
+                setSelectedTime(null);
+                setSelectedDate(null);
+            });
     };
 
     const onDateSelect = (day) => {
@@ -199,8 +200,8 @@ const styles = StyleSheet.create({
         marginTop: 24,
         padding: 16,
         borderRadius: 20,
-        borderColor: Colors.color_light_gray,
-        borderWidth: 2,
+
+        
         justifyContent: "center",
     },
 
@@ -208,8 +209,6 @@ const styles = StyleSheet.create({
         padding: 16,
         borderRadius: 20,
         marginBottom: 12,
-        borderColor: Colors.color_light_gray,
-        borderWidth: 2,
         justifyContent: "center",
     },
 
@@ -234,8 +233,6 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: Colors.color_white,
         borderRadius: 20,
-        borderWidth: 2,
-        borderColor: Colors.color_light_gray,
         justifyContent: "space-between",
     },
     bottom_container: {

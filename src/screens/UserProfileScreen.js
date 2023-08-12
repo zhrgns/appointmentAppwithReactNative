@@ -1,12 +1,27 @@
 import React from "react";
 
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Image,
+} from "react-native";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "../../firebaseConfig";
 import { Feather } from "@expo/vector-icons";
+import CardSmall from "../components/CardSmall";
 import { showTopMessage } from "../utils/ErrorHandler";
+import Colors from "../utils/Colors";
 
 export default function UserProfileScreen({ navigation }) {
+    const userInfo = {
+        id: 0,
+        firstName: "Zehra",
+        lastName: "Güneş",
+        district: "Ataşehir",
+    };
     //sing out user
     function handleSignOut() {
         const auth = getAuth(app);
@@ -25,10 +40,40 @@ export default function UserProfileScreen({ navigation }) {
         navigation.navigate("LoginScreen");
     }
 
+    function goToBookingHistory() {
+        navigation.navigate("BookingHistoryScreen");
+    }
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}> User Info </Text>
+            <Text style={styles.header_text}>Profilim</Text>
 
+            <View style={styles.section_container}>
+                <TouchableWithoutFeedback>
+                    <View style={styles.card}>
+                        <Image
+                            source={require("../../assets/user-profile.png")}
+                            style={styles.image}
+                        />
+
+                        <View style={styles.text_container}>
+                            <View style={styles.title_container}>
+                                <Text style={styles.title}>
+                                    {userInfo.firstName} {userInfo.lastName}
+                                </Text>
+                                <Text style={styles.desc}>
+                                    {userInfo.district}
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+                <View />
+
+                <CardSmall iconName={"user"} text={"Hesap Bilgilerim"}  />
+                <CardSmall iconName={"list"} text={"Geçmiş Randevularım"} onPress={goToBookingHistory} />
+                <CardSmall iconName={"message-square"} text={"Geri Bildirim"} />
+            </View>
             <TouchableOpacity
                 style={styles.logout_container}
                 onPress={handleSignOut}
@@ -51,17 +96,52 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 48,
     },
+    card: {
+        flexDirection: "row",
+        borderRadius: 20,
+        padding: 16,
+        marginHorizontal: 24,
+        marginBottom: 16,
+        backgroundColor: Colors.color_white,
+        padding: 16,
+    },
+    image: {
+        marginRight: 16,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 50,
+        overflow: "hidden",
+        width: 72,
+        height: 72,
+    },
+    text_container: {
+        flex: 1,
+    },
+    title_container: {
+        flex: 1,
+        justifyContent:"center"
+    },
+    title: {
+        fontSize: 18,
+        fontFamily: "Mulish-Medium",
+    },
+    desc: {
+        fontSize: 14,
+        fontFamily: "Mulish-Light",
+        color: Colors.color_gray,
+    },
+    section_container: {
+        flex: 1,
+    },
     logout_container: {
         flexDirection: "row",
         margin: 16,
         alignItems: "center",
         justifyContent: "center",
     },
-    title: {
-        flex: 1,
-        padding: 16,
+    header_text: {
         marginHorizontal: 24,
-        marginVertical: 32,
+        marginVertical: 16,
         fontSize: 30,
         fontFamily: "Mulish-Medium",
     },

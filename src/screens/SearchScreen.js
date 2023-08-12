@@ -4,11 +4,11 @@ import CardMedium from "../components/CardMedium";
 import SearchBar from "../components/SearchBar";
 import { getDatabase, ref, child, get } from "firebase/database";
 import Colors from "../utils/Colors";
-import ParseContentData from "../utils/ParseContentData";
 import { filterServicesByCategory } from "../utils/CategoryUtils";
 import categories from "../utils/Categories";
 import Category from "../components/Category";
 import { showTopMessage } from "../utils/ErrorHandler";
+import parseContentData from "../utils/ParseContentData";
 
 export default function SearchScreen({ navigation }) {
     const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ export default function SearchScreen({ navigation }) {
         get(child(dbRef, "services"))
             .then((snapshot) => {
                 if (snapshot.exists()) {
-                    const serviceList = ParseContentData(snapshot.val());
+                    const serviceList = parseContentData(snapshot.val());
                     setServiceList(serviceList);
                     setFilteredServiceList(serviceList);
                 } else {

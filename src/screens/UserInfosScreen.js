@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-export default function HomeScreen({ route }) {
+export default function UserInfosScreen({ route }) {
     let user = route?.params?.user; // Optional chaining ile route ve params objelerinin varlığını kontrol ediyoruz
 
     const welcomeText =

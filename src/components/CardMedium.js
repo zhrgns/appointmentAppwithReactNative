@@ -44,10 +44,6 @@ const styles = StyleSheet.create({
         marginBottom: 8,
         backgroundColor: Colors.color_white,
         padding: 16,
-        borderColor: Colors.color_light_gray,
-        borderWidth: 2,
-        flexDirection: "row",
-        borderRadius: 20,
     },
     image: {
         marginRight: 16,

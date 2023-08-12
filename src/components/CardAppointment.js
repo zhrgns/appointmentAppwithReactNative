@@ -12,10 +12,13 @@ import {
 
 export default function CardAppointment({
     appointment,
+    serviceInfo,
     onPressCancel,
     onPress,
 }) {
     const { appType, bookedDate, bookedTime } = appointment;
+
+    const fullName =serviceInfo.firstName + " " + serviceInfo.lastName
 
     const formattedDate = new Date(bookedDate);
     const day = formattedDate.getDate();
@@ -33,7 +36,7 @@ export default function CardAppointment({
                     </View>
                 </View>
                 <View style={styles.info_container}>
-                    <Text style={styles.appType}>{appType}</Text>
+                    <Text style={styles.appType}>{appType}, {fullName}</Text>
                     <Text style={styles.time}>{bookedTime}</Text>
                 </View>
                 <TouchableOpacity style={styles.icon_container}>
@@ -101,7 +104,7 @@ const styles = StyleSheet.create({
         color: Colors.color_white,
     },
     appType: {
-        fontFamily: "Mulish-Bold",
+        fontFamily: "Mulish-Medium",
         fontSize: 18,
         padding: 8,
     },

@@ -16,13 +16,6 @@ const deviceSize = Dimensions.get("window");
 export default function ServiceDetailScreen({ route, navigation }) {
     const { item } = route.params;
 
-    //Read skills
-    const renderSkills = ({ item }) => (
-        <Text style={styles.chips}> {item} </Text>
-    );
-
-    const divider = () => <View style={styles.divider} />;
-
     const goToBookingScreen = (item) => {
         navigation.navigate("ServiceBookingScreen", { item });
     };
@@ -50,13 +43,13 @@ export default function ServiceDetailScreen({ route, navigation }) {
                     <View style={styles.title_container}>
                         <Text style={styles.about}>About</Text>
 
-                        <FlatList
-                            data={item.skills}
-                            renderItem={renderSkills}
-                            horizontal={true}
-                            keyExtractor={(item, index) => index.toString()}
-                            ItemSeparatorComponent={divider}
-                        />
+                        <View style={styles.skills_container}>
+                            {item.skills.map((skill, index) => (
+                                <Text key={index} style={styles.chips}>
+                                    {skill}
+                                </Text>
+                            ))}
+                        </View>
 
                         <Text style={styles.desc}>LOREM IPSUM</Text>
                     </View>
@@ -71,7 +64,6 @@ export default function ServiceDetailScreen({ route, navigation }) {
                     </View>
                     <View style={styles.detail}>
                         <Text style={styles.detail_text}>
-                            {" "}
                             {item.numberOf_books} Tamamlanmış Randevu
                         </Text>
                     </View>
@@ -103,8 +95,6 @@ const styles = StyleSheet.create({
         marginTop: 24,
         padding: 16,
         borderRadius: 20,
-        borderColor: Colors.color_light_gray,
-        borderWidth: 2,
         justifyContent: "center",
     },
     body_container: {
@@ -113,9 +103,6 @@ const styles = StyleSheet.create({
         marginTop: 24,
         padding: 16,
         borderRadius: 20,
-
-        borderColor: Colors.color_light_gray,
-        borderWidth: 2,
         justifyContent: "center",
     },
     image_container: {
@@ -131,8 +118,8 @@ const styles = StyleSheet.create({
     },
     button_container: {
         flexDirection: "row",
-        marginBottom:16,
-        marginHorizontal:24
+        marginBottom: 16,
+        marginHorizontal: 24,
     },
     title: {
         fontSize: 24,
@@ -147,19 +134,24 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         marginVertical: 24,
-        justifyContent:"space-between"
+        justifyContent: "space-between",
+    },
+    skills_container: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        marginVertical: 16,
+        flexWrap: "wrap",
     },
     detail: {
-        flex:1,
+        flex: 1,
         flexDirection: "row",
         alignItems: "center",
         borderRadius: 20,
-        borderWidth: 2,
-        marginHorizontal:12,
-        borderColor: Colors.color_light_gray,
+        marginHorizontal: 12,
         height: windowWidth / 3,
         justifyContent: "center",
-        backgroundColor:Colors.color_white
+        backgroundColor: Colors.color_white,
     },
     detail_text: {
         textAlign: "center",
@@ -167,22 +159,19 @@ const styles = StyleSheet.create({
         fontFamily: "Mulish-Medium",
     },
     chips: {
+        alignSelf: "flex-start",
         borderRadius: 20,
-        borderWidth: 1,
-        borderColor: "#000",
-        fontWeight: "300",
-        marginVertical: 24,
         padding: 8,
+        margin: 4,
         borderRadius: 16,
         fontFamily: "Mulish-Light",
+        backgroundColor: Colors.color_blue,
+        color:Colors.color_white
     },
     desc: {
         fontSize: 14,
         fontWeight: "300",
         padding: 8,
         fontFamily: "Mulish-Light",
-    },
-    divider: {
-        marginHorizontal: 4,
     },
 });

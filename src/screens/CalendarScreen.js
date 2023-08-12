@@ -1,6 +1,5 @@
 import { child, get, getDatabase, ref, remove } from "firebase/database";
 import React, { useState, useEffect } from "react";
-
 import {
     View,
     Text,
@@ -9,7 +8,7 @@ import {
     ScrollView,
     Alert,
 } from "react-native";
-import ParseContentData from "../utils/ParseContentData";
+import parseContentData from "../utils/ParseContentData";
 import { getAuth } from "firebase/auth";
 import Colors from "../utils/Colors";
 import CardAppointment from "../components/CardAppointment";
@@ -19,7 +18,6 @@ import { sortAppointmentsByDateAndTime } from "../utils/CalendarUtils";
 export default function CalendarScreen() {
     const [loading, setLoading] = useState(true);
     const [appointmentList, setAppointmentList] = useState([]);
-
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -31,9 +29,29 @@ export default function CalendarScreen() {
         get(child(dbRef, "userAppointments/" + user.uid))
             .then((snapshot) => {
                 if (snapshot.exists()) {
-                    const getList = ParseContentData(snapshot.val());
+                    const getList = parseContentData(snapshot.val());
 
-                    setAppointmentList(sortAppointmentsByDateAndTime(getList));
+                    const servicePromises = getList.map((appointment) =>
+                        fetchServiceInfo(appointment.serviceId)
+                    );
+
+                    // Tüm promise'ların sonuçlarını bekleyin
+                    Promise.all(servicePromises)
+                        // Randevu verilerine sağlayıcı bilgilerini ekleyin
+                        .then((serviceInfos) => {
+                            const updateAppointmentList = getList.map(
+                                (appointment, index) => ({
+                                    ...appointment,
+                                    serviceInfo: serviceInfos[index],
+                                })
+                            );
+                            // Tarih ve saatine göre sıralanmış randevu listesini güncelleyin
+                            setAppointmentList(
+                                sortAppointmentsByDateAndTime(
+                                    updateAppointmentList
+                                )
+                            );
+                        });
                 } else {
                     showTopMessage("Gösterecek veri yok", "info");
                 }
@@ -45,6 +63,24 @@ export default function CalendarScreen() {
                 setLoading(false);
             });
     }, [appointmentList]); // Burada appointmentList'i bağımlılık olarak ekledik
+
+    const fetchServiceInfo = (id) => {
+        const dbRef = ref(getDatabase(), "services/" + id);
+
+        return get(dbRef)
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    // console.log(snapshot.val())
+                    return snapshot.val();
+                } else {
+                    return null;
+                }
+            })
+            .catch(() => {
+                console.error(error);
+                return null;
+            });
+    };
 
     const handleCancel = (appointment) => {
         Alert.alert(
@@ -102,6 +138,7 @@ export default function CalendarScreen() {
                             {appointmentList.map((appointment) => (
                                 <CardAppointment
                                     appointment={appointment}
+                                    serviceInfo={appointment.serviceInfo}
                                     key={appointment.id}
                                     onPressCancel={() =>
                                         handleCancel(appointment)
@@ -123,7 +160,7 @@ const styles = StyleSheet.create({
     },
     header_text: {
         marginHorizontal: 24,
-        marginVertical: 32,
+        marginVertical: 16,
         fontSize: 30,
         fontFamily: "Mulish-Medium",
     },
@@ -135,6 +172,7 @@ const styles = StyleSheet.create({
         fontFamily: "Mulish-Medium",
         fontSize: 24,
         alignItems: "center",
+        marginHorizontal: 24,
     },
     loadingIndicator: {
         flex: 1,

@@ -9,6 +9,8 @@ import SearchScreen from "../screens/SearchScreen";
 import ServiceDetailScreen from "../screens/ServiceDetailScreen";
 import ServiceBookingScreen from "../screens/ServiceBookingScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
+import BookingHistoryScreen from "../screens/BookingHistoryScreen"
+import UserInfosScreen from "../screens/UserInfosScreen"
 
 import app from "../../firebaseConfig";
 import iconPref from "../utils/IconUtils";
@@ -41,6 +43,17 @@ function AuthStack() {
             <Stack.Screen
                 name="ServiceBookingScreen"
                 component={ServiceBookingScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="BookingHistoryScreen"
+                component={BookingHistoryScreen}
+                options={{ headerShown: false }}
+            />
+
+            <Stack.Screen
+                name="UserInfosScreen"
+                component={UserInfosScreen}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>
@@ -88,25 +101,25 @@ export default Navigation = ({ navigation }) => {
     return (
         <Tab.Navigator screenOptions={iconPref}>
             <Tab.Screen
-                name="Home"
+                name="Anasayfa"
                 component={HomeScreen}
                 options={{ headerShown: false }}
             />
             <Tab.Screen
-                name="Search"
+                name="Ara"
                 component={SearchStack}
                 options={{ headerShown: false }}
             />
 
             {user ? (
                 <Tab.Screen
-                    name="Calendar"
+                    name="Randevularım"
                     component={CalendarScreen}
                     options={{ headerShown: false }}
                 />
             ) : (
                 <Tab.Screen
-                    name="Calendar"
+                    name="Randevularım"
                     component={AuthStack}
                     options={{ headerShown: false }}
                 />
@@ -114,13 +127,13 @@ export default Navigation = ({ navigation }) => {
 
             {user ? (
                 <Tab.Screen
-                    name="Profile"
+                    name="Profil"
                     component={UserProfileScreen}
                     options={{ headerShown: false }}
                 />
             ) : (
                 <Tab.Screen
-                    name="Profile"
+                    name="Profil"
                     component={AuthStack}
                     options={{ headerShown: false }}
                 />

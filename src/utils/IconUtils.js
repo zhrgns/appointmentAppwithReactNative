@@ -1,5 +1,5 @@
-import Ionicons from "react-native-vector-icons/Ionicons";
 import Colors from "./Colors";
+import { Feather } from "@expo/vector-icons";
 
  //ICONS
  const iconPref = ({ route }) => {
@@ -7,20 +7,20 @@ import Colors from "./Colors";
         tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
-            if (route.name === "Home") {
-                iconName = focused ? "home" : "home-outline";
-            } else if (route.name === "Profile") {
-                iconName = focused ? "person" : "person-outline";
-            } else if (route.name === "Calendar") {
-                iconName = focused ? "calendar" : "calendar-outline";
-            } else if (route.name === "Search") {
-                iconName = focused ? "search" : "search-outline";
+            if (route.name === "Anasayfa") {
+                iconName= "home" ;
+            } else if (route.name === "Profil") {
+                iconName = "user";
+            } else if (route.name === "Randevularım") {
+                iconName = "calendar";
+            } else if (route.name === "Ara") {
+                iconName = "search";
             }
             //returns in each icon
-            return <Ionicons name={iconName} size={size} color={color} />;
+            return <Feather name={iconName} size={24} color={color} />
         },
         tabBarActiveTintColor: Colors.color_blue,
-        tabBarInactiveTintColor: "gray",
+        tabBarInactiveTintColor: Colors.color_gray,
     };
 }
 
