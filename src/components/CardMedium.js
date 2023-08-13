@@ -6,7 +6,7 @@ import {
     View,
     TouchableWithoutFeedback,
 } from "react-native";
-import Colors from "../utils/Colors";
+import {colors} from "../styles/Theme";
 
 export default function CardMedium({ service, onSelect, image_source }) {
     return (
@@ -41,9 +41,12 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 16,
         marginHorizontal: 24,
-        marginBottom: 8,
-        backgroundColor: Colors.color_white,
-        padding: 16,
+        marginVertical: 8,
+        backgroundColor: colors.color_white,
+        shadowColor: colors.color_gray,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        elevation: 6,
     },
     image: {
         marginRight: 16,
@@ -67,6 +70,6 @@ const styles = StyleSheet.create({
     desc: {
         fontSize: 14,
         fontFamily: "Mulish-Light",
-        color:Colors.color_gray
+        color:colors.color_gray
     },
 });

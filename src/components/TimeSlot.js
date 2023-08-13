@@ -1,8 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet, Dimensions } from "react-native";
-import Colors from "../utils/Colors";
+import {colors} from "../styles/Theme";
 
-const windowWidth = Dimensions.get("window").width;
 
 const TimeSlot = ({ time, onPress, isSelected }) => {
     return (
@@ -28,22 +27,22 @@ const styles = StyleSheet.create({
         paddingVertical:12,
         margin: 8,
         borderRadius: 50,
-        borderColor: Colors.color_blue,
+        borderColor: colors.color_blue,
         borderWidth: 1,    },
     text: {
         textAlign: "center",
         fontSize: 14,
-        color: Colors.color_blue,
+        color: colors.color_blue,
         fontFamily: "Mulish-Medium",
     },
     selectedText: {
         justifyContent: "center",
         fontSize: 14,
-        color: Colors.color_white,
+        color: colors.color_white,
         fontFamily: "Mulish-Medium",
     },
     selectedButton: {
-        backgroundColor: Colors.color_blue,
+        backgroundColor: colors.color_blue,
     },
 });
 

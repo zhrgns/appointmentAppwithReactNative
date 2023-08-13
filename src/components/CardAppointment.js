@@ -1,5 +1,5 @@
 import React from "react";
-import Colors from "../utils/Colors";
+import { colors } from "../styles/Theme";
 import { Entypo } from "@expo/vector-icons";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 
@@ -45,7 +45,7 @@ export default function CardAppointment({
                             <Entypo
                                 name="dots-three-vertical"
                                 size={20}
-                                color={Colors.color_light_gray}
+                                color={colors.color_light_gray}
                                 onPress={onPress}
                             />
                         </MenuTrigger>
@@ -67,19 +67,23 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         borderRadius: 40,
-        marginHorizontal: 16,
-        marginVertical: 8,
+        marginHorizontal: 24,
+        marginBottom: 16,
         paddingVertical: 10,
-        backgroundColor: Colors.color_white,
+        backgroundColor: colors.color_white,
+        shadowColor: colors.color_gray,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        elevation: 6,
     },
     date_container: {
-        backgroundColor: Colors.color_blue,
+        backgroundColor: colors.color_blue,
         marginHorizontal: 16,
         borderRadius: 50,
         paddingHorizontal: 10,
         paddingVertical: 16,
         alignItems: "center",
-        shadowColor: Colors.color_gray,
+        shadowColor: colors.color_gray,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 4,
@@ -96,12 +100,12 @@ const styles = StyleSheet.create({
     date_text: {
         fontFamily: "Mulish-Medium",
         fontSize: 34,
-        color: Colors.color_white,
+        color: colors.color_white,
     },
     month_text: {
         fontFamily: "Mulish-Medium",
         fontSize: 18,
-        color: Colors.color_white,
+        color: colors.color_white,
     },
     appType: {
         fontFamily: "Mulish-Medium",
@@ -112,6 +116,6 @@ const styles = StyleSheet.create({
         fontFamily: "Mulish-Medium",
         fontSize: 14,
         padding: 8,
-        color: Colors.color_gray,
+        color: colors.color_gray,
     },
 });

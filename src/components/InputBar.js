@@ -1,6 +1,6 @@
 import React from "react";
 import {StyleSheet, TextInput, View } from "react-native";
-import Colors from "../utils/Colors";
+import {colors} from "../styles/Theme";
 
 
 export default function InputBar(props) {
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#fff",
         padding:10,
-        borderColor: Colors.color_light_gray,
+        borderColor: colors.color_light_gray,
         borderWidth:2,
         borderRadius:20,
         marginVertical:8,

@@ -9,15 +9,15 @@ import SearchScreen from "../screens/SearchScreen";
 import ServiceDetailScreen from "../screens/ServiceDetailScreen";
 import ServiceBookingScreen from "../screens/ServiceBookingScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
-import BookingHistoryScreen from "../screens/BookingHistoryScreen"
-import UserInfosScreen from "../screens/UserInfosScreen"
+import BookingHistoryScreen from "../screens/BookingHistoryScreen";
+import UserInfosScreen from "../screens/UserInfosScreen";
 
 import app from "../../firebaseConfig";
 import iconPref from "../utils/IconUtils";
 import { useState } from "react";
 import { getAuth } from "firebase/auth";
 import { useEffect } from "react";
-import { Use } from "react-native-svg";
+import NotificationsScreen from "../screens/NotificationsScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -87,9 +87,36 @@ function SearchStack() {
     );
 }
 
-export default Navigation = ({ navigation }) => {
-    const [user, setUser] = useState(getAuth(app).currentUser);
+function HomeStack() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="HomeScreen"
+                component={HomeScreen}
+                options={{ headerShown: false }}
+            />
 
+            <Stack.Screen
+                name="CalendarScreen"
+                component={CalendarScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="NotificationsScreen"
+                component={NotificationsScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="SearchScreen"
+                component={SearchScreen}
+                options={{ headerShown: false }}
+            />
+        </Stack.Navigator>
+    );
+}
+
+export default Navigation = () => {
+    const [user, setUser] = useState(getAuth(app).currentUser);
     const auth = getAuth();
 
     useEffect(() => {
@@ -98,46 +125,24 @@ export default Navigation = ({ navigation }) => {
         });
     }, []);
 
+    function getTabScreen(authenticatedComponent, defaultComponent) {
+        return user ? authenticatedComponent : defaultComponent;
+    }
+
     return (
-        <Tab.Navigator screenOptions={iconPref}>
-            <Tab.Screen
-                name="Anasayfa"
-                component={HomeScreen}
-                options={{ headerShown: false }}
-            />
-            <Tab.Screen
-                name="Ara"
-                component={SearchStack}
-                options={{ headerShown: false }}
-            />
-
-            {user ? (
+        <>
+            <Tab.Navigator screenOptions={iconPref} initialRouteName="Anasayfa">
+                <Tab.Screen name="Anasayfa" component={HomeStack} />
+                <Tab.Screen name="Ara" component={SearchStack} />
                 <Tab.Screen
                     name="Randevularım"
-                    component={CalendarScreen}
-                    options={{ headerShown: false }}
+                    component={getTabScreen(CalendarScreen, AuthStack)}
                 />
-            ) : (
-                <Tab.Screen
-                    name="Randevularım"
-                    component={AuthStack}
-                    options={{ headerShown: false }}
-                />
-            )}
-
-            {user ? (
                 <Tab.Screen
                     name="Profil"
-                    component={UserProfileScreen}
-                    options={{ headerShown: false }}
+                    component={getTabScreen(UserProfileScreen, AuthStack)}
                 />
-            ) : (
-                <Tab.Screen
-                    name="Profil"
-                    component={AuthStack}
-                    options={{ headerShown: false }}
-                />
-            )}
-        </Tab.Navigator>
+            </Tab.Navigator>
+        </>
     );
 };

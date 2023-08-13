@@ -1,14 +1,14 @@
-import Colors from "./Colors";
+import {colors} from "../styles/Theme";
 import { Feather } from "@expo/vector-icons";
 
- //ICONS
- const iconPref = ({ route }) => {
+//ICONS
+const iconPref = ({ route }) => {
     return {
         tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
             if (route.name === "Anasayfa") {
-                iconName= "home" ;
+                iconName = "home";
             } else if (route.name === "Profil") {
                 iconName = "user";
             } else if (route.name === "Randevularım") {
@@ -17,11 +17,13 @@ import { Feather } from "@expo/vector-icons";
                 iconName = "search";
             }
             //returns in each icon
-            return <Feather name={iconName} size={24} color={color} />
+            return <Feather name={iconName} size={30} color={color} />;
         },
-        tabBarActiveTintColor: Colors.color_blue,
-        tabBarInactiveTintColor: Colors.color_gray,
+        tabBarActiveTintColor: colors.color_blue,
+        tabBarInactiveTintColor: colors.color_gray,
+        headerShown: false,
+        tabBarShowLabel: false 
     };
-}
+};
 
 export default iconPref;

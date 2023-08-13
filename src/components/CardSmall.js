@@ -6,7 +6,7 @@ import {
     View,
     TouchableOpacity,
 } from "react-native";
-import Colors from "../utils/Colors";
+import { colors } from "../styles/Theme";
 import { Feather } from "@expo/vector-icons";
 
 export default function CardSmall({ text, onSelect, iconName }) {
@@ -36,8 +36,9 @@ const styles = StyleSheet.create({
         padding: 16,
         marginHorizontal: 24,
         marginBottom: 16,
-        backgroundColor: Colors.color_white,
+        backgroundColor: colors.color_white,
         justifyContent: "center",
+        
     },
     section_container: {
         flex: 1,
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
         padding: 4,
     },
     section_text: {
-        fontSize: 18,
+        fontSize: 14,
         fontFamily: "Mulish-Medium",
     },
 });
