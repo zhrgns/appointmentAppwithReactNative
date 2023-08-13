@@ -8,15 +8,12 @@ import {
     ScrollView,
     ActivityIndicator,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
 import { colors } from "../styles/Theme";
-import SearchBar from "../components/SearchBar";
 import { child, get, getDatabase, ref } from "firebase/database";
 import parseContentData from "../utils/ParseContentData";
 import CardAppointmentSmall from "../components/CardAppointmentSmall";
 import { sortAppointmentsByDateAndTime } from "../utils/CalendarUtils";
-import categories from "../utils/Categories";
-import { CardCarousel } from "../components/CardCarousel";
+
 
 const userInfo = {
     id: 0,
@@ -25,7 +22,7 @@ const userInfo = {
     district: "Ataşehir",
 };
 
-export default function HomeScreen({ navigation }) {
+export default function NotificationsScreen({ navigation }) {
     const [appointmentList, setAppointmentList] = useState([]);
 
     const [userAuth, setUserAuth] = useState(null);
@@ -111,53 +108,17 @@ export default function HomeScreen({ navigation }) {
         navigation.navigate("CalendarScreen");
     }
 
-    //NAVIGATION
-    function goToNotifications() {
-        navigation.navigate("NotificationsScreen");
-    }
 
     return (
         <ScrollView>
             {isReady && (
                 <View style={styles.container}>
-                    <View style={styles.top_container}>
-                        <View style={styles.header_container}>
-                            <Text style={styles.header_text}>AppointMe</Text>
-                            <Feather
-                                name="bell"
-                                size={24}
-                                style={styles.icon}
-                                onPress={goToNotifications}
-                            />
-                        </View>
-                        <View style={styles.card_container}>
-                            <View style={styles.welcome_container}>
-                                <Text style={styles.welcome_text}>
-                                    Hoşgeldin
-                                </Text>
-                                <Text style={styles.welcome_text_bold}>
-                                    {user ? ", " + userInfo.firstName : ""}
-                                </Text>
-                            </View>
-                            <Text style={styles.detail_text}>
-                                Bir hizmet mi arıyorsun?
-                            </Text>
-                            <View style={styles.search_container}>
-                                <SearchBar placeholder_text={"Hizmet Ara"} />
-                            </View>
-                        </View>
-                    </View>
                     <View style={styles.app_container}>
-                        <Text style={styles.text}>Sizin İçin</Text>
-                        <CardCarousel list={categories} />
-
                         {appointmentList.length === 0 ? (
                             ""
                         ) : (
                             <View style={styles.list_container}>
-                                <Text style={styles.text}>
-                                    Yaklaşan Randevular
-                                </Text>
+                                <Text style={styles.text}>Bildirimlerim</Text>
                                 <View>
                                     {appointmentList
                                         .slice(0, 2)

@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet, ActivityIndicator } from "react-native";
 import CardMedium from "../components/CardMedium";
 import SearchBar from "../components/SearchBar";
 import { getDatabase, ref, child, get } from "firebase/database";
-import Colors from "../utils/Colors";
+import { colors, sizes } from "../styles/Theme";
 import { filterServicesByCategory } from "../utils/CategoryUtils";
 import categories from "../utils/Categories";
 import Category from "../components/Category";
@@ -100,17 +100,23 @@ export default function SearchScreen({ navigation }) {
                 <ActivityIndicator
                     style={styles.loadingIndicator}
                     size="large"
-                    color={Colors.color_blue}
+                    color={colors.color_blue}
                 />
             ) : (
                 <View style={styles.container}>
                     <View style={styles.search_container}>
-                        <SearchBar onSearch={handleSearch} />
+                        <SearchBar
+                            onSearch={handleSearch}
+                            placeholder_text={"Arama"}
+                        />
                     </View>
 
                     <View style={styles.category_container}>
                         <FlatList
                             horizontal
+                            showsHorizontalScrollIndicator={false}
+                            snapToInterval={sizes.width + 24}
+                            decelerationRate={"fast"}
                             data={categories}
                             keyExtractor={(category) => category.name}
                             renderItem={renderCategory}
@@ -135,7 +141,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     search_container: {
-        marginTop: 48,
+        marginTop: 56,
+        marginBottom: 12,
         marginHorizontal: 24,
     },
     category_container: {

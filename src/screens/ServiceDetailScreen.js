@@ -5,13 +5,11 @@ import {
     Text,
     Image,
     Dimensions,
-    FlatList,
     ScrollView,
 } from "react-native";
 import Button from "../components/button/Button";
-import Colors from "../utils/Colors";
+import {colors} from "../styles/Theme";
 
-const deviceSize = Dimensions.get("window");
 
 export default function ServiceDetailScreen({ route, navigation }) {
     const { item } = route.params;
@@ -45,9 +43,11 @@ export default function ServiceDetailScreen({ route, navigation }) {
 
                         <View style={styles.skills_container}>
                             {item.skills.map((skill, index) => (
-                                <Text key={index} style={styles.chips}>
-                                    {skill}
-                                </Text>
+                                <View style={styles.chip_container}>
+                                    <Text key={index} style={styles.chips}>
+                                        {skill}
+                                    </Text>
+                                </View>
                             ))}
                         </View>
 
@@ -58,13 +58,12 @@ export default function ServiceDetailScreen({ route, navigation }) {
                 <View style={styles.detail_container}>
                     <View style={styles.detail}>
                         <Text style={styles.detail_text}>
-                            {" "}
                             {item.experience}+ Deneyim
                         </Text>
                     </View>
                     <View style={styles.detail}>
                         <Text style={styles.detail_text}>
-                            {item.numberOf_books} Tamamlanmış Randevu
+                            {item.numberOf_books}Tamamlanmış Randevu
                         </Text>
                     </View>
                 </View>
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 12,
         height: windowWidth / 3,
         justifyContent: "center",
-        backgroundColor: Colors.color_white,
+        backgroundColor: colors.color_white,
     },
     detail_text: {
         textAlign: "center",
@@ -160,13 +159,14 @@ const styles = StyleSheet.create({
     },
     chips: {
         alignSelf: "flex-start",
-        borderRadius: 20,
-        padding: 8,
-        margin: 4,
-        borderRadius: 16,
         fontFamily: "Mulish-Light",
-        backgroundColor: Colors.color_blue,
-        color:Colors.color_white
+        color: colors.color_white,
+    },
+    chip_container: {
+        borderRadius: 20,
+        backgroundColor: colors.color_blue,
+        padding: 12,
+        margin: 4,
     },
     desc: {
         fontSize: 14,
