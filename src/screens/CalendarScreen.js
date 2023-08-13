@@ -10,12 +10,12 @@ import {
 } from "react-native";
 import parseContentData from "../utils/ParseContentData";
 import { getAuth } from "firebase/auth";
-import Colors from "../utils/Colors";
+import {colors} from "../styles/Theme";
 import CardAppointment from "../components/CardAppointment";
 import { showTopMessage } from "../utils/ErrorHandler";
 import { sortAppointmentsByDateAndTime } from "../utils/CalendarUtils";
 
-export default function CalendarScreen() {
+export default function CalendarScreen({route,navigation}) {
     const [loading, setLoading] = useState(true);
     const [appointmentList, setAppointmentList] = useState([]);
     const auth = getAuth();
@@ -35,9 +35,9 @@ export default function CalendarScreen() {
                         fetchServiceInfo(appointment.serviceId)
                     );
 
-                    // Tüm promise'ların sonuçlarını bekleyin
+                    // Tüm promise'ların sonuçlarını bekle
                     Promise.all(servicePromises)
-                        // Randevu verilerine sağlayıcı bilgilerini ekleyin
+                        // Randevu verilerine sağlayıcı bilgilerini ekle
                         .then((serviceInfos) => {
                             const updateAppointmentList = getList.map(
                                 (appointment, index) => ({
@@ -45,7 +45,7 @@ export default function CalendarScreen() {
                                     serviceInfo: serviceInfos[index],
                                 })
                             );
-                            // Tarih ve saatine göre sıralanmış randevu listesini güncelleyin
+                            // Tarih ve saatine göre sıralanmış randevu listesini güncelle
                             setAppointmentList(
                                 sortAppointmentsByDateAndTime(
                                     updateAppointmentList
@@ -125,7 +125,7 @@ export default function CalendarScreen() {
                 <ActivityIndicator
                     style={styles.loadingIndicator}
                     size="large"
-                    color={Colors.color_blue}
+                    color={colors.color_blue}
                 />
             ) : (
                 <View style={styles.list_container}>

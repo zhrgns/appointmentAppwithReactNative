@@ -14,6 +14,7 @@ const initialFormValues = {
 
 const LoginScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
+    
 
     function handleFormSubmit(formValues) {
         const auth = getAuth(app);

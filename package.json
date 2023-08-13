@@ -32,7 +32,8 @@
     "react-native-popup-menu": "^0.16.1",
     "react-native-reanimated": "~3.3.0",
     "react-native-safe-area-context": "^4.6.3",
-    "react-native-screens": "~3.22.0"
+    "react-native-screens": "~3.22.0",
+    "expo-notifications": "~0.20.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

@@ -13,7 +13,7 @@ import { app } from "../../firebaseConfig";
 import { Feather } from "@expo/vector-icons";
 import CardSmall from "../components/CardSmall";
 import { showTopMessage } from "../utils/ErrorHandler";
-import Colors from "../utils/Colors";
+import {colors} from "../styles/Theme";
 
 export default function UserProfileScreen({ navigation }) {
     const userInfo = {
@@ -70,16 +70,23 @@ export default function UserProfileScreen({ navigation }) {
                 </TouchableWithoutFeedback>
                 <View />
 
-                <CardSmall iconName={"user"} text={"Hesap Bilgilerim"}  />
-                <CardSmall iconName={"list"} text={"Geçmiş Randevularım"} onPress={goToBookingHistory} />
+                <CardSmall iconName={"user"} text={"Hesap Bilgilerim"} />
+                <CardSmall
+                    iconName={"list"}
+                    text={"Geçmiş Randevularım"}
+                    onPress={goToBookingHistory}
+                />
                 <CardSmall iconName={"message-square"} text={"Geri Bildirim"} />
+
+                <View style={styles.logo_container}>
+                    <Text style={styles.logo_text}>AppointMe</Text>
+                </View>
             </View>
             <TouchableOpacity
                 style={styles.logout_container}
                 onPress={handleSignOut}
             >
                 <Text style={styles.text}>Çıkış Yap </Text>
-
                 <Feather
                     style={styles.icon}
                     name="log-out"
@@ -102,7 +109,7 @@ const styles = StyleSheet.create({
         padding: 16,
         marginHorizontal: 24,
         marginBottom: 16,
-        backgroundColor: Colors.color_white,
+        backgroundColor: colors.color_white,
         padding: 16,
     },
     image: {
@@ -119,7 +126,7 @@ const styles = StyleSheet.create({
     },
     title_container: {
         flex: 1,
-        justifyContent:"center"
+        justifyContent: "center",
     },
     title: {
         fontSize: 18,
@@ -128,7 +135,7 @@ const styles = StyleSheet.create({
     desc: {
         fontSize: 14,
         fontFamily: "Mulish-Light",
-        color: Colors.color_gray,
+        color: colors.color_gray,
     },
     section_container: {
         flex: 1,
@@ -144,6 +151,16 @@ const styles = StyleSheet.create({
         marginVertical: 16,
         fontSize: 30,
         fontFamily: "Mulish-Medium",
+    },
+    logo_container: {
+        flex: 1,
+        flexDirection: "column-reverse",
+        alignItems: "center",
+    },
+    logo_text: {
+        fontSize: 34,
+        fontFamily: "Mulish-Medium",
+        color: colors.color_light_gray,
     },
     icon: {
         padding: 4,
