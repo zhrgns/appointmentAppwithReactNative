@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
     View,
+    Button,
     Text,
     StyleSheet,
     ScrollView,
@@ -27,6 +28,7 @@ const userInfo = {
 };
 
 export default function HomeScreen({ navigation }) {
+
     const [appointmentList, setAppointmentList] = useState([]);
 
     const [userAuth, setUserAuth] = useState(null);
@@ -34,8 +36,6 @@ export default function HomeScreen({ navigation }) {
 
     const auth = getAuth();
     const user = auth.currentUser;
-
-    const nav = useNavigation();
 
     // //Kullanıcı oturumu
     useEffect(() => {

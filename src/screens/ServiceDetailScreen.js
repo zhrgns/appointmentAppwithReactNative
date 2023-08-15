@@ -1,18 +1,24 @@
 import React from "react";
-import {
-    View,
-    StyleSheet,
-    Text,
-    Image,
-    Dimensions,
-    ScrollView,
-} from "react-native";
+import { View, StyleSheet, Text, Image, ScrollView, Share, TouchableOpacity } from "react-native";
 import Button from "../components/button/Button";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { colors, sizes } from "../styles/Theme";
 
 export default function ServiceDetailScreen({ route, navigation }) {
     const { item } = route.params;
 
+    const shareContent = async () => {
+        try {
+            const result = await Share.share({
+                message: "Şuna bir göz at ...",
+                title: "Uygulama Paylaşımı",
+            });
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
+
+    //NAVIGATION
     const goToBookingScreen = (item) => {
         navigation.navigate("ServiceBookingScreen", { item });
     };
@@ -20,24 +26,43 @@ export default function ServiceDetailScreen({ route, navigation }) {
     return (
         <View style={styles.out_container}>
             <ScrollView style={styles.container}>
+                <View style={styles.share_container}>
+                    <TouchableOpacity onPress={shareContent}>
+                        <Feather
+                            name="share"
+                            size={24}
+                            color={colors.color_blue}
+                        />
+                    </TouchableOpacity>
+                </View>
                 {/* Header */}
                 <View style={styles.header_container}>
                     <Image
                         style={styles.image_container}
                         source={require("../../assets/user-profile.png")}
                     />
-                    <View style={styles.title_container}>
-                        <Text style={styles.title}>
-                            {item.firstName} {item.lastName}
-                        </Text>
-                        <Text style={styles.desc}>
-                            {item.expert_area}, {item.district}
-                        </Text>
+                    <View>
+                        <View style={styles.title_container}>
+                            <Text style={styles.title}>
+                                {item.firstName} {item.lastName}
+                            </Text>
+                            <Text style={styles.about}>
+                                {item.expert_area} Uzmanı
+                            </Text>
+                        </View>
+                        <View style={styles.location_container}>
+                            <Ionicons
+                                name="ios-location-outline"
+                                size={18}
+                                color={colors.color_blue}
+                            />
+                            <Text style={styles.location}>{item.district}</Text>
+                        </View>
                     </View>
                 </View>
                 {/* Body */}
                 <View style={styles.body_container}>
-                    <View style={styles.title_container}>
+                    <View style={styles.about_container}>
                         <Text style={styles.about}>About</Text>
 
                         <View style={styles.skills_container}>
@@ -81,19 +106,22 @@ export default function ServiceDetailScreen({ route, navigation }) {
     );
 }
 
-
-
 const styles = StyleSheet.create({
     out_container: { flex: 1 },
     container: {
         flexGrow: 1,
-        marginTop: 48,
         paddingHorizontal: 24,
+    },
+    share_container: {
+        marginTop: 40,
+        marginHorizontal: 4,
+        flexDirection: "row-reverse",
+        alignItems: "center",
     },
     header_container: {
         flexDirection: "row",
         backgroundColor: "#fff",
-        marginTop: 24,
+        marginVertical: 12,
         padding: 16,
         borderRadius: 20,
         justifyContent: "center",
@@ -101,7 +129,7 @@ const styles = StyleSheet.create({
     body_container: {
         flexDirection: "row",
         backgroundColor: "#fff",
-        marginTop: 24,
+        marginVertical: 12,
         padding: 16,
         borderRadius: 20,
         justifyContent: "center",
@@ -114,6 +142,10 @@ const styles = StyleSheet.create({
         height: 100,
     },
     title_container: {
+        flex: 1,
+    },
+    location_container: { flexDirection: "row", paddingVertical: 8 },
+    about_container: {
         flex: 1,
         justifyContent: "space-evenly",
     },
@@ -128,6 +160,10 @@ const styles = StyleSheet.create({
     },
     about: {
         fontSize: 20,
+        fontFamily: "Mulish-Light",
+    },
+    desc: {
+        fontSize: 14,
         fontFamily: "Mulish-Light",
     },
     detail_container: {
@@ -156,7 +192,8 @@ const styles = StyleSheet.create({
     detail_text: {
         textAlign: "center",
         fontSize: 20,
-        fontFamily: "Mulish-Medium",
+        fontFamily: "Mulish-SemiBold",
+        color: colors.color_blue,
     },
     chips: {
         alignSelf: "flex-start",
@@ -169,10 +206,11 @@ const styles = StyleSheet.create({
         padding: 12,
         margin: 4,
     },
-    desc: {
-        fontSize: 14,
-        fontWeight: "300",
-        padding: 8,
+    location: {
+        fontSize: 16,
         fontFamily: "Mulish-Light",
+        flex: 1,
+        color: colors.color_blue,
+        justifyContent: "center",
     },
 });

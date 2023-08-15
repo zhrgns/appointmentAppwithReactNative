@@ -7,6 +7,8 @@ import Navigation from "./src/components/Navigation";
 import { MenuProvider } from "react-native-popup-menu";
 
 export default function App() {
+
+    //font
     const [fontsLoaded] = useFonts(Fonts);
 
     if (!fontsLoaded) {

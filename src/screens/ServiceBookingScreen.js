@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, Image, ScrollView, Alert } from "react-native";
 import Button from "../components/button/Button";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Calendar } from "react-native-calendars";
 import moment from "moment";
 import { colors } from "../styles/Theme";
@@ -8,8 +8,9 @@ import { getAuth } from "firebase/auth";
 import { getDatabase, push, ref, get, child } from "firebase/database";
 import { showTopMessage } from "../utils/ErrorHandler";
 import TimeSlot from "../components/TimeSlot";
-import { useEffect } from "react";
 import parseContentData from "../utils/ParseContentData";
+import * as Notifications from "expo-notifications";
+
 
 export default function ServiceBookingScreen({ route, navigation }) {
     const { item } = route.params;
@@ -25,6 +26,33 @@ export default function ServiceBookingScreen({ route, navigation }) {
     const user = auth.currentUser;
 
     const [apptimeList, setApptimeList] = useState([]);
+
+    //notification
+    useEffect(() => {
+        // Bildirim ayarlarını tanımlama
+        Notifications.setNotificationHandler({
+            handleNotification: async () => ({
+                shouldShowAlert: true,
+                shouldPlaySound: false,
+                shouldSetBadge: false,
+            }),
+        });
+    }, []);
+
+    const handleNotification = () => {
+        console.log("bildirim")
+        // Bildirim oluşturma
+        const notificationContent = {
+            title: "Yaklaşan randevunuz",
+            body: `Randevunuz saatinde.`,
+        };
+        Notifications.scheduleNotificationAsync({
+            content: notificationContent,
+            trigger: {
+                seconds: 10, // Kaç saniye sonra bildirimin gösterileceği
+            },
+        });
+    };
 
     //get times from database
     useEffect(() => {
@@ -97,6 +125,7 @@ export default function ServiceBookingScreen({ route, navigation }) {
             .then(() => {
                 showTopMessage("Randevunuz oluşturuldu!", "success");
 
+                handleNotification();
                 goToCompletedScreen();
                 setSelectedTime(null);
                 setSelectedDate(null);
