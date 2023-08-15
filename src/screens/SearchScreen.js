@@ -58,6 +58,7 @@ export default function SearchScreen({ navigation }) {
         <CardMedium
             image_source={require("../../assets/user-profile.png")}
             service={item}
+            key={item.id}
             onSelect={() => handleServiceSelect(item)}
         />
     );

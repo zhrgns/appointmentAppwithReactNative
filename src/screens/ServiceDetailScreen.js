@@ -113,22 +113,23 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
     },
     share_container: {
-        marginTop: 40,
+        flex:1,
+        marginTop: 48,
         marginHorizontal: 4,
         flexDirection: "row-reverse",
         alignItems: "center",
     },
     header_container: {
         flexDirection: "row",
-        backgroundColor: "#fff",
+        backgroundColor:  colors.color_white,
         marginVertical: 12,
         padding: 16,
         borderRadius: 20,
-        justifyContent: "center",
+
     },
     body_container: {
         flexDirection: "row",
-        backgroundColor: "#fff",
+        backgroundColor:  colors.color_white,
         marginVertical: 12,
         padding: 16,
         borderRadius: 20,

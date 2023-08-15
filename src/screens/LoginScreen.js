@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Button from "../components/button/Button";
 import InputBar from "../components/InputBar";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "../../firebaseConfig";
 import { Formik } from "formik";
 import ErrorHandler, { showTopMessage } from "../utils/ErrorHandler";
+import { colors } from "../styles/Theme";
 
 const initialFormValues = {
     usermail: "",
@@ -14,7 +15,6 @@ const initialFormValues = {
 
 const LoginScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
-    
 
     function handleFormSubmit(formValues) {
         const auth = getAuth(app);
@@ -70,18 +70,25 @@ const LoginScreen = ({ navigation }) => {
                                 placeholder={"Parola"}
                                 isSecure
                             />
+                            <TouchableOpacity style={styles.button}>
+                                <Text style={styles.detail}>Parolamı Unuttum?</Text>
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.button_container}>
-                            <Button
-                                text="Kaydol"
-                                onPress={goToMemberSignUp}
-                                theme="secondary"
-                            />
-                            <Button
-                                text="Giriş Yap"
-                                onPress={handleSubmit}
-                                loading={loading}
-                            />
+                            <View style={styles.button}>
+                                <Button
+                                    text="Giriş Yap"
+                                    onPress={handleSubmit}
+                                    loading={loading}
+                                />
+                            </View>
+                            <View style={styles.button}>
+                                <Button
+                                    text="Kaydol"
+                                    onPress={goToMemberSignUp}
+                                    theme="secondary"
+                                />
+                            </View>
                         </View>
                     </>
                 )}
@@ -95,19 +102,24 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-start",
         marginTop: 48,
+        paddingHorizontal: 24,
     },
     text: {
-        marginHorizontal: 24,
         marginVertical: 32,
         fontSize: 30,
         fontFamily: "Mulish-Medium",
     },
-    input_container: {
-        marginHorizontal: 24,
+    detail: {
+        fontSize: 14,
+        fontFamily: "Mulish-Medium",
+        color:colors.color_gray
     },
     button_container: {
+        paddingVertical: 8,
+    },
+    button: {
+        paddingVertical: 8,
         flexDirection: "row",
-        margin: 16,
     },
 });
 

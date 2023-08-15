@@ -28,7 +28,6 @@ const userInfo = {
 };
 
 export default function HomeScreen({ navigation }) {
-
     const [appointmentList, setAppointmentList] = useState([]);
 
     const [userAuth, setUserAuth] = useState(null);
@@ -91,7 +90,7 @@ export default function HomeScreen({ navigation }) {
         }
     }, [userAuth]); // User auth dependecy
 
-    function fetchServiceInfo(id) {
+    async function fetchServiceInfo(id) {
         const dbRef = ref(getDatabase(), "services/" + id);
 
         return get(dbRef)
@@ -186,6 +185,12 @@ export default function HomeScreen({ navigation }) {
                                 </View>
                             </View>
                         )}
+                        <Text style={styles.text}> Popüler Hizmetler</Text>
+                        <View>
+                            <CardCarousel
+                                list={categories.slice().sort((a, b) => a.count - b.count).reverse()}
+                            />
+                        </View>
                     </View>
                 </View>
             )}

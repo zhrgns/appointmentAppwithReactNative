@@ -14,12 +14,22 @@ import {colors} from "../styles/Theme";
 import CardAppointment from "../components/CardAppointment";
 import { showTopMessage } from "../utils/ErrorHandler";
 import { sortAppointmentsByDateAndTime } from "../utils/CalendarUtils";
+import {
+    configureNotifications,
+    handleNotification,
+} from "../utils/NotificationService";
 
 export default function CalendarScreen({route,navigation}) {
     const [loading, setLoading] = useState(true);
     const [appointmentList, setAppointmentList] = useState([]);
     const auth = getAuth();
     const user = auth.currentUser;
+
+
+    //notification
+    useEffect(() => {
+        configureNotifications();
+    }, []);
 
     //get user appointments from database
 
@@ -53,7 +63,7 @@ export default function CalendarScreen({route,navigation}) {
                             );
                         });
                 } else {
-                    showTopMessage("Gösterecek veri yok", "info");
+                    console.log("Gösterecek veri yok");
                 }
             })
             .catch((error) => {
@@ -64,13 +74,12 @@ export default function CalendarScreen({route,navigation}) {
             });
     }, [appointmentList]); // Burada appointmentList'i bağımlılık olarak ekledik
 
-    const fetchServiceInfo = (id) => {
+     const fetchServiceInfo = (id) => {
         const dbRef = ref(getDatabase(), "services/" + id);
 
         return get(dbRef)
             .then((snapshot) => {
                 if (snapshot.exists()) {
-                    // console.log(snapshot.val())
                     return snapshot.val();
                 } else {
                     return null;
@@ -105,6 +114,7 @@ export default function CalendarScreen({route,navigation}) {
                         remove(appointmentsRef)
                             .then(() => {
                                 showTopMessage("Randevu silindi!", "success");
+                                handleNotification("Randevu iptali",` ${appointment.appType} randevunuz iptal edildi.`);
                             })
                             .catch((error) => {
                                 showTopMessage(

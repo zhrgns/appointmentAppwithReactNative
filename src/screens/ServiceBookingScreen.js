@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, Image, ScrollView, Alert } from "react-native";
 import Button from "../components/button/Button";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar } from "react-native-calendars";
 import moment from "moment";
 import { colors } from "../styles/Theme";
@@ -9,8 +9,11 @@ import { getDatabase, push, ref, get, child } from "firebase/database";
 import { showTopMessage } from "../utils/ErrorHandler";
 import TimeSlot from "../components/TimeSlot";
 import parseContentData from "../utils/ParseContentData";
-import * as Notifications from "expo-notifications";
-
+import { Ionicons } from "@expo/vector-icons";
+import {
+    configureNotifications,
+    handleNotification,
+} from "../utils/NotificationService";
 
 export default function ServiceBookingScreen({ route, navigation }) {
     const { item } = route.params;
@@ -29,30 +32,8 @@ export default function ServiceBookingScreen({ route, navigation }) {
 
     //notification
     useEffect(() => {
-        // Bildirim ayarlarını tanımlama
-        Notifications.setNotificationHandler({
-            handleNotification: async () => ({
-                shouldShowAlert: true,
-                shouldPlaySound: false,
-                shouldSetBadge: false,
-            }),
-        });
+        configureNotifications();
     }, []);
-
-    const handleNotification = () => {
-        console.log("bildirim")
-        // Bildirim oluşturma
-        const notificationContent = {
-            title: "Yaklaşan randevunuz",
-            body: `Randevunuz saatinde.`,
-        };
-        Notifications.scheduleNotificationAsync({
-            content: notificationContent,
-            trigger: {
-                seconds: 10, // Kaç saniye sonra bildirimin gösterileceği
-            },
-        });
-    };
 
     //get times from database
     useEffect(() => {
@@ -79,7 +60,7 @@ export default function ServiceBookingScreen({ route, navigation }) {
         if (selectedDate && selectedTime && user) {
             Alert.alert(
                 "Randevu Oluşturma",
-                "Randevunuz oluşturulacakonaylıyor musunuz ?",
+                "Randevunuz oluşturulacak, onaylıyor musunuz ?",
                 [
                     {
                         text: "Vazgeç",
@@ -122,16 +103,17 @@ export default function ServiceBookingScreen({ route, navigation }) {
             bookedDate,
             bookedTime,
         })
-            .then(() => {
+            .then(async () => {
                 showTopMessage("Randevunuz oluşturuldu!", "success");
 
-                handleNotification();
+                handleNotification ("Yaklaşan randevunuz",`Randevunuz ${bookedDate} , ${bookedTime} saati için oluşturuldu.`);
                 goToCompletedScreen();
                 setSelectedTime(null);
                 setSelectedDate(null);
             })
             .catch((error) => {
                 showTopMessage("Bir hata oluştu.", "info");
+                console.error(error)
                 setSelectedTime(null);
                 setSelectedDate(null);
             });
@@ -162,13 +144,23 @@ export default function ServiceBookingScreen({ route, navigation }) {
                         style={styles.image_container}
                         source={require("../../assets/user-profile.png")}
                     />
-                    <View style={styles.title_container}>
-                        <Text style={styles.title}>
-                            {item.firstName} {item.lastName}
-                        </Text>
-                        <Text style={styles.desc}>
-                            {item.expert_area}, {item.district}
-                        </Text>
+                    <View>
+                        <View style={styles.title_container}>
+                            <Text style={styles.title}>
+                                {item.firstName} {item.lastName}
+                            </Text>
+                            <Text style={styles.about}>
+                                {item.expert_area} Uzmanı
+                            </Text>
+                        </View>
+                        <View style={styles.location_container}>
+                            <Ionicons
+                                name="ios-location-outline"
+                                size={18}
+                                color={colors.color_blue}
+                            />
+                            <Text style={styles.location}>{item.district}</Text>
+                        </View>
                     </View>
                 </View>
 
@@ -226,7 +218,7 @@ const styles = StyleSheet.create({
     header_container: {
         flexDirection: "row",
         backgroundColor: colors.color_white,
-        marginTop: 24,
+        marginTop: 36,
         padding: 16,
         borderRadius: 20,
         justifyContent: "center",
@@ -247,6 +239,10 @@ const styles = StyleSheet.create({
         height: 100,
     },
     title_container: {
+        flex: 1,
+    },
+    location_container: { flexDirection: "row", paddingVertical: 8 },
+    about_container: {
         flex: 1,
         justifyContent: "space-evenly",
     },
@@ -271,9 +267,14 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         paddingHorizontal: 24,
     },
+    about: {
+        fontSize: 20,
+        fontFamily: "Mulish-Light",
+    },
 
     title: {
         fontSize: 24,
+        fontFamily: "Mulish-Light",
     },
     subTitle: {
         fontSize: 18,
@@ -281,7 +282,13 @@ const styles = StyleSheet.create({
     },
     desc: {
         fontSize: 14,
-        fontWeight: "300",
-        paddingVertical: 8,
+        fontFamily: "Mulish-Light",
+    },
+    location: {
+        fontSize: 16,
+        fontFamily: "Mulish-Light",
+        flex: 1,
+        color: colors.color_blue,
+        justifyContent: "center",
     },
 });

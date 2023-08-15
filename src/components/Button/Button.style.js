@@ -4,7 +4,6 @@ import {colors} from "../../styles/Theme";
 const style_base = StyleSheet.create({
     container: {
         borderRadius: 20,
-        marginHorizontal: 8,
         padding: 8,
         flex: 1,
         justifyContent:"center",

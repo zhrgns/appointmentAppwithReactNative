@@ -9,7 +9,7 @@ export default function InputBar(props) {
         <View style={styles.container}>
             <TextInput style= {{fontSize:14, fontFamily: "Mulish-Medium"}} 
             placeholder={props.placeholder}
-            placeholderTextColor="#d9d9d9"
+            placeholderTextColor={colors.color_gray}
             onChangeText={props.onType}
             value = {props.value}
             secureTextEntry={props.isSecure}
@@ -20,10 +20,10 @@ export default function InputBar(props) {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#fff",
-        padding:10,
+        padding:16,
         borderColor: colors.color_light_gray,
-        borderWidth:2,
+        backgroundColor:colors.color_light_gray,
+        borderWidth:1,
         borderRadius:20,
         marginVertical:8,
     }
