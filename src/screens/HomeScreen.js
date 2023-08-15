@@ -1,6 +1,7 @@
 import { getAuth } from "firebase/auth";
 import React from "react";
 import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
     View,
     Text,
@@ -33,6 +34,8 @@ export default function HomeScreen({ navigation }) {
 
     const auth = getAuth();
     const user = auth.currentUser;
+
+    const nav = useNavigation();
 
     // //Kullanıcı oturumu
     useEffect(() => {
@@ -116,6 +119,10 @@ export default function HomeScreen({ navigation }) {
         navigation.navigate("NotificationsScreen");
     }
 
+    const handleSearch = () => {
+        nav.navigate("SearchScreen");
+    };
+
     return (
         <ScrollView>
             {isReady && (
@@ -143,22 +150,27 @@ export default function HomeScreen({ navigation }) {
                                 Bir hizmet mi arıyorsun?
                             </Text>
                             <View style={styles.search_container}>
-                                <SearchBar placeholder_text={"Hizmet Ara"} />
+                                <SearchBar
+                                    placeholder_text={"Hizmet Ara"}
+                                    onSearch={handleSearch}
+                                />
                             </View>
                         </View>
                     </View>
                     <View style={styles.app_container}>
                         <Text style={styles.text}>Sizin İçin</Text>
-                        <CardCarousel list={categories} />
+                        <View>
+                            <CardCarousel list={categories} />
+                        </View>
 
                         {appointmentList.length === 0 ? (
                             ""
                         ) : (
-                            <View style={styles.list_container}>
+                            <View>
                                 <Text style={styles.text}>
                                     Yaklaşan Randevular
                                 </Text>
-                                <View>
+                                <View style={styles.list_container}>
                                     {appointmentList
                                         .slice(0, 2)
                                         .map((appointment) => (
@@ -220,6 +232,7 @@ const styles = StyleSheet.create({
     },
     list_container: {
         flex: 1,
+        marginVertical: 8,
     },
     header_text: {
         fontSize: 34,
@@ -236,7 +249,6 @@ const styles = StyleSheet.create({
     text: {
         flex: 1,
         fontSize: 18,
-        paddingVertical: 16,
         fontFamily: "Mulish-Medium",
     },
     detail_text: {

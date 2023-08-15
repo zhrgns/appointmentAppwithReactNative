@@ -12,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 const CARD_WIDTH = sizes.width - 100;
 const CARD_HEIGHT = 150;
 
-export const CardCarousel = ({ list }) => {
+export const CardCarousel = ({ list, onPress}) => {
     return (
         <FlatList
             data={list}
@@ -27,7 +27,9 @@ export const CardCarousel = ({ list }) => {
                         style={{
                             marginLeft: index === 0 ? 0 : 24,
                             marginRight: index === list.length - 1 ? 24 : 0,
+                            marginVertical:16
                         }}
+                        onPress={onPress}
                     >
                         <View style={styles.card}>
                             <View style={styles.box}>
@@ -61,6 +63,10 @@ const styles = StyleSheet.create({
         height: CARD_HEIGHT,
         borderRadius: 20,
         backgroundColor: colors.color_light_gray,
+        shadowColor: colors.color_gray,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        elevation: 6,
     },
     title_box: {
         left:24,

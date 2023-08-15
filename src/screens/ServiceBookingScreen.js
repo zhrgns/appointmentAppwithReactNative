@@ -3,7 +3,7 @@ import Button from "../components/button/Button";
 import React, { useState } from "react";
 import { Calendar } from "react-native-calendars";
 import moment from "moment";
-import {colors} from "../styles/Theme";
+import { colors } from "../styles/Theme";
 import { getAuth } from "firebase/auth";
 import { getDatabase, push, ref, get, child } from "firebase/database";
 import { showTopMessage } from "../utils/ErrorHandler";
@@ -154,8 +154,8 @@ export default function ServiceBookingScreen({ route, navigation }) {
                         [selectedDate]: {
                             selected: true,
                             disableTouchEvent: true,
-                            selectedColor: {colors}.color_blue,
-                            selectedTextColor: {colors}.color_white,
+                            selectedColor: colors.color_blue,
+                            selectedTextColor: colors.color_white,
                         },
                     }}
                     minDate={today}
@@ -196,12 +196,10 @@ const styles = StyleSheet.create({
     },
     header_container: {
         flexDirection: "row",
-        backgroundColor: {colors}.color_white,
+        backgroundColor: colors.color_white,
         marginTop: 24,
         padding: 16,
         borderRadius: 20,
-
-        
         justifyContent: "center",
     },
 
@@ -231,7 +229,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flexWrap: "wrap",
         padding: 16,
-        backgroundColor: {colors}.color_white,
+        backgroundColor: colors.color_white,
         borderRadius: 20,
         justifyContent: "space-between",
     },
@@ -242,19 +240,19 @@ const styles = StyleSheet.create({
     button_container: {
         flexDirection: "row",
         marginBottom: 16,
-        marginHorizontal: 24,
+        paddingHorizontal: 24,
     },
 
     title: {
         fontSize: 24,
     },
     subTitle: {
-        fontSize: 20,
-        padding: 16,
+        fontSize: 18,
+        paddingVertical: 16,
     },
     desc: {
         fontSize: 14,
         fontWeight: "300",
-        padding: 8,
+        paddingVertical: 8,
     },
 });

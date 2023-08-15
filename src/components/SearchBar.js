@@ -1,19 +1,35 @@
-import React from "react";
-import { StyleSheet, TextInput, View } from "react-native";
-import {colors} from "../styles/Theme";
+import React, { useState } from "react";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { colors } from "../styles/Theme";
 import { Feather } from "@expo/vector-icons";
 
 export default function SearchBar(props) {
+    const [isSearchFocused, setSearchFocused] = useState(false);
+
+    const handleSearchFocus = () => {
+        setSearchFocused(true);
+        props.onSearch("");
+    };
+
+    const handleSearchBlur = () => {
+        setSearchFocused(false);
+    };
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container}>
             <Feather
                 name="search"
                 size={20}
                 color={colors.color_light_gray}
                 style={styles.icon}
             />
-            <TextInput placeholder={props.placeholder_text} onChangeText={props.onSearch} />
-        </View>
+            <TextInput
+                style={styles.input_line}
+                placeholder={props.placeholder_text}
+                onChangeText={props.onSearch}
+                onBlur={handleSearchBlur}
+                onFocus={handleSearchFocus}
+            />
+        </TouchableOpacity>
     );
 }
 
@@ -28,5 +44,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         elevation: 6,
     },
-    icon: { paddingEnd: 8 }
+    icon: { paddingEnd: 8 },
+    input_line: {
+        flex: 1,
+    },
 });

@@ -8,8 +8,7 @@ import {
     ScrollView,
 } from "react-native";
 import Button from "../components/button/Button";
-import {colors} from "../styles/Theme";
-
+import { colors, sizes } from "../styles/Theme";
 
 export default function ServiceDetailScreen({ route, navigation }) {
     const { item } = route.params;
@@ -63,7 +62,10 @@ export default function ServiceDetailScreen({ route, navigation }) {
                     </View>
                     <View style={styles.detail}>
                         <Text style={styles.detail_text}>
-                            {item.numberOf_books}Tamamlanmış Randevu
+                            {item.numberOf_books}
+                        </Text>
+                        <Text style={styles.detail_text}>
+                            Tamamlanmış Randevu
                         </Text>
                     </View>
                 </View>
@@ -79,7 +81,7 @@ export default function ServiceDetailScreen({ route, navigation }) {
     );
 }
 
-const windowWidth = Dimensions.get("window").width;
+
 
 const styles = StyleSheet.create({
     out_container: { flex: 1 },
@@ -144,11 +146,10 @@ const styles = StyleSheet.create({
     },
     detail: {
         flex: 1,
-        flexDirection: "row",
         alignItems: "center",
         borderRadius: 20,
         marginHorizontal: 12,
-        height: windowWidth / 3,
+        height: sizes.width / 3,
         justifyContent: "center",
         backgroundColor: colors.color_white,
     },

@@ -7,7 +7,11 @@ const style_base = StyleSheet.create({
         marginHorizontal: 8,
         padding: 8,
         flex: 1,
-        justifyContent:"center"
+        justifyContent:"center",
+        shadowColor: colors.color_gray,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        elevation: 6,
     },
     text: {
         textAlign: "center",

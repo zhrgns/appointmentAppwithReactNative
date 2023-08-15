@@ -16,6 +16,7 @@ export default function SearchScreen({ navigation }) {
     const [filteredServiceList, setFilteredServiceList] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("");
 
+
     useEffect(() => {
         const dbRef = ref(getDatabase());
 
