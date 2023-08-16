@@ -157,7 +157,7 @@ export default function ServiceBookingScreen({ route, navigation }) {
                             <Ionicons
                                 name="ios-location-outline"
                                 size={18}
-                                color={colors.color_blue}
+                                color={colors.color_primary}
                             />
                             <Text style={styles.location}>{item.district}</Text>
                         </View>
@@ -175,8 +175,13 @@ export default function ServiceBookingScreen({ route, navigation }) {
                         [selectedDate]: {
                             selected: true,
                             disableTouchEvent: true,
-                            selectedColor: colors.color_blue,
+                            selectedColor: colors.color_primary,
                             selectedTextColor: colors.color_white,
+                        },
+                    }}
+                    customStyle={{
+                        today: {
+                            todayTextColor: colors.color_primary,
                         },
                     }}
                     minDate={today}
@@ -288,7 +293,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: "Mulish-Light",
         flex: 1,
-        color: colors.color_blue,
+        color: colors.color_primary,
         justifyContent: "center",
     },
 });

@@ -31,7 +31,7 @@ export default function ServiceDetailScreen({ route, navigation }) {
                         <Feather
                             name="share"
                             size={24}
-                            color={colors.color_blue}
+                            color={colors.color_primary}
                         />
                     </TouchableOpacity>
                 </View>
@@ -54,7 +54,7 @@ export default function ServiceDetailScreen({ route, navigation }) {
                             <Ionicons
                                 name="ios-location-outline"
                                 size={18}
-                                color={colors.color_blue}
+                                color={colors.color_primary}
                             />
                             <Text style={styles.location}>{item.district}</Text>
                         </View>
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 20,
         fontFamily: "Mulish-SemiBold",
-        color: colors.color_blue,
+        color: colors.color_primary,
     },
     chips: {
         alignSelf: "flex-start",
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     },
     chip_container: {
         borderRadius: 20,
-        backgroundColor: colors.color_blue,
+        backgroundColor: colors.color_primary,
         padding: 12,
         margin: 4,
     },
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: "Mulish-Light",
         flex: 1,
-        color: colors.color_blue,
+        color: colors.color_primary,
         justifyContent: "center",
     },
 });

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import parseContentData from "../utils/ParseContentData";
 import { getAuth } from "firebase/auth";
-import {colors} from "../styles/Theme";
+import { colors } from "../styles/Theme";
 import CardAppointment from "../components/CardAppointment";
 import { showTopMessage } from "../utils/ErrorHandler";
 import { sortAppointmentsByDateAndTime } from "../utils/CalendarUtils";
@@ -19,12 +19,11 @@ import {
     handleNotification,
 } from "../utils/NotificationService";
 
-export default function CalendarScreen({route,navigation}) {
+export default function CalendarScreen({ route, navigation }) {
     const [loading, setLoading] = useState(true);
     const [appointmentList, setAppointmentList] = useState([]);
     const auth = getAuth();
     const user = auth.currentUser;
-
 
     //notification
     useEffect(() => {
@@ -34,14 +33,18 @@ export default function CalendarScreen({route,navigation}) {
     //get user appointments from database
 
     useEffect(() => {
+        fetchData();
+    }, [appointmentList]);
+
+    const fetchData = () => {
         const dbRef = ref(getDatabase());
 
         get(child(dbRef, "userAppointments/" + user.uid))
             .then((snapshot) => {
                 if (snapshot.exists()) {
-                    const getList = parseContentData(snapshot.val());
+                    const data = parseContentData(snapshot.val());
 
-                    const servicePromises = getList.map((appointment) =>
+                    const servicePromises = data.map((appointment) =>
                         fetchServiceInfo(appointment.serviceId)
                     );
 
@@ -49,7 +52,7 @@ export default function CalendarScreen({route,navigation}) {
                     Promise.all(servicePromises)
                         // Randevu verilerine sağlayıcı bilgilerini ekle
                         .then((serviceInfos) => {
-                            const updateAppointmentList = getList.map(
+                            const appointmentList = data.map(
                                 (appointment, index) => ({
                                     ...appointment,
                                     serviceInfo: serviceInfos[index],
@@ -57,9 +60,7 @@ export default function CalendarScreen({route,navigation}) {
                             );
                             // Tarih ve saatine göre sıralanmış randevu listesini güncelle
                             setAppointmentList(
-                                sortAppointmentsByDateAndTime(
-                                    updateAppointmentList
-                                )
+                                sortAppointmentsByDateAndTime(appointmentList)
                             );
                         });
                 } else {
@@ -72,9 +73,9 @@ export default function CalendarScreen({route,navigation}) {
             .finally(() => {
                 setLoading(false);
             });
-    }, [appointmentList]); // Burada appointmentList'i bağımlılık olarak ekledik
+    };
 
-     const fetchServiceInfo = (id) => {
+    async function fetchServiceInfo(id) {
         const dbRef = ref(getDatabase(), "services/" + id);
 
         return get(dbRef)
@@ -89,7 +90,27 @@ export default function CalendarScreen({route,navigation}) {
                 console.error(error);
                 return null;
             });
-    };
+    }
+
+    function removeAppointment(appointment) {
+        const appointmentsRef = ref(
+            getDatabase(),
+            "userAppointments/" + user.uid + "/" + appointment.id
+        );
+
+        remove(appointmentsRef)
+            .then(() => {
+                showTopMessage("Randevu silindi!", "success");
+                handleNotification(
+                    "Randevu iptali",
+                    ` ${appointment.appType} randevunuz iptal edildi.`
+                );
+                fetchData();
+            })
+            .catch((error) => {
+                showTopMessage("Randevu silinirken hata oluştu !", "info");
+            });
+    }
 
     const handleCancel = (appointment) => {
         Alert.alert(
@@ -103,25 +124,7 @@ export default function CalendarScreen({route,navigation}) {
                 {
                     text: "İptal Et",
                     onPress: () => {
-                        const appointmentsRef = ref(
-                            getDatabase(),
-                            "userAppointments/" +
-                                user.uid +
-                                "/" +
-                                appointment.id
-                        );
-
-                        remove(appointmentsRef)
-                            .then(() => {
-                                showTopMessage("Randevu silindi!", "success");
-                                handleNotification("Randevu iptali",` ${appointment.appType} randevunuz iptal edildi.`);
-                            })
-                            .catch((error) => {
-                                showTopMessage(
-                                    "Randevu silinirken hata oluştu !",
-                                    "info"
-                                );
-                            });
+                        removeAppointment(appointment);
                     },
                 },
             ]
@@ -135,7 +138,7 @@ export default function CalendarScreen({route,navigation}) {
                 <ActivityIndicator
                     style={styles.loadingIndicator}
                     size="large"
-                    color={colors.color_blue}
+                    color={colors.color_primary}
                 />
             ) : (
                 <View style={styles.list_container}>

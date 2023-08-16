@@ -140,7 +140,7 @@ export default function NotificationsScreen({ navigation }) {
             )}
             {!isReady && (
                 <View style={styles.loading_container}>
-                    <ActivityIndicator size="large" color={colors.color_blue} />
+                    <ActivityIndicator size="large" color={colors.color_primary} />
                 </View>
             )}
         </ScrollView>
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     },
     card_container: {
         marginVertical: 16,
-        backgroundColor: colors.color_blue,
+        backgroundColor: colors.color_primary,
         borderRadius: 20,
         padding: 16,
     },
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     header_text: {
         fontSize: 34,
         fontFamily: "Mulish-Medium",
-        color: colors.color_blue,
+        color: colors.color_primary,
         flex: 1,
     },
     welcome_text: {
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
         fontFamily: "Mulish-Bold",
     },
     icon: {
-        color: colors.color_blue,
+        color: colors.color_primary,
     },
     loading_container: {
         flex: 1,

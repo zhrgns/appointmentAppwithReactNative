@@ -102,7 +102,7 @@ export default function SearchScreen({ navigation }) {
                 <ActivityIndicator
                     style={styles.loadingIndicator}
                     size="large"
-                    color={colors.color_blue}
+                    color={colors.color_primary}
                 />
             ) : (
                 <View style={styles.container}>

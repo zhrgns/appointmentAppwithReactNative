@@ -27,12 +27,12 @@ const styles = StyleSheet.create({
         paddingVertical:12,
         margin: 8,
         borderRadius: 50,
-        borderColor: colors.color_blue,
+        borderColor: colors.color_primary,
         borderWidth: 1,    },
     text: {
         textAlign: "center",
         fontSize: 14,
-        color: colors.color_blue,
+        color: colors.color_primary,
         fontFamily: "Mulish-Medium",
     },
     selectedText: {
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         fontFamily: "Mulish-Medium",
     },
     selectedButton: {
-        backgroundColor: colors.color_blue,
+        backgroundColor: colors.color_primary,
     },
 });
 

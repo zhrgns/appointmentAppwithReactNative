@@ -28,7 +28,7 @@ export default {
         ...style_base,
         container: {
             ...style_base.container,
-            backgroundColor:colors.color_blue,
+            backgroundColor:colors.color_primary,
         }, text : {
             ...style_base.text,
             color: colors.color_white,
@@ -41,11 +41,11 @@ export default {
         container: {
             ...style_base.container, 
             backgroundColor: colors.color_white,
-            borderColor: colors.color_blue,
+            borderColor: colors.color_primary,
             borderWidth:2,
         }, text : {
             ...style_base.text,
-            color:colors.color_blue,
+            color:colors.color_primary,
         }
     })
 };

@@ -17,7 +17,7 @@ const Category = ({ category, isSelected, onPress }) => {
                 color={
                     isSelected 
                     ? colors.color_white 
-                    : colors.color_blue
+                    : colors.color_primary
                 }
                 style={styles.icon}
             />
@@ -36,17 +36,17 @@ const styles = StyleSheet.create({
         padding: 16,
         marginHorizontal: 8,
         borderRadius: 10,
-        borderColor: colors.color_blue,
+        borderColor: colors.color_primary,
         borderWidth: 1,
         width: windowWidth / 4,
         height: windowWidth / 4,
         justifyContent:"center"
     },
     selectedButton: {
-        backgroundColor: colors.color_blue,
+        backgroundColor: colors.color_primary,
     },
     text: {
-        color: colors.color_blue,
+        color: colors.color_primary,
         fontSize:14,
         fontFamily: "Mulish-Medium",
         textAlign:  "center"

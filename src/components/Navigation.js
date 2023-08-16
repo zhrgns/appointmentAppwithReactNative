@@ -11,13 +11,14 @@ import ServiceBookingScreen from "../screens/ServiceBookingScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
 import BookingHistoryScreen from "../screens/BookingHistoryScreen";
 import UserInfosScreen from "../screens/UserInfosScreen";
+import NotificationsScreen from "../screens/NotificationsScreen";
+import MapScreen from "../screens/MapScreen";
 
 import app from "../../firebaseConfig";
-import iconPref from "../utils/IconUtils";
+import iconPref, { customTabButton } from "../utils/NavBarUtils";
 import { useState } from "react";
 import { getAuth } from "firebase/auth";
 import { useEffect } from "react";
-import NotificationsScreen from "../screens/NotificationsScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -115,6 +116,23 @@ function HomeStack() {
     );
 }
 
+function MapStack() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="MapScreen"
+                component={MapScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="ServiceDetailScreen"
+                component={ServiceDetailScreen}
+                options={{ headerShown: false }}
+            />
+        </Stack.Navigator>
+    );
+}
+
 export default Navigation = () => {
     const [user, setUser] = useState(getAuth(app).currentUser);
     const auth = getAuth();
@@ -134,6 +152,11 @@ export default Navigation = () => {
             <Tab.Navigator screenOptions={iconPref} initialRouteName="Anasayfa">
                 <Tab.Screen name="Anasayfa" component={HomeStack} />
                 <Tab.Screen name="Ara" component={SearchStack} />
+                <Tab.Screen
+                    name="Harita"
+                    component={MapStack}
+                    options={{ tabBarButton: customTabButton }}
+                />
                 <Tab.Screen
                     name="Randevularım"
                     component={getTabScreen(CalendarScreen, AuthStack)}

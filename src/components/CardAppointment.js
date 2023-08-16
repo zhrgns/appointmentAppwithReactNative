@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: "row",
-        borderRadius: 40,
+        borderRadius: 20,
         marginHorizontal: 24,
         marginBottom: 16,
         paddingVertical: 10,
@@ -77,11 +77,11 @@ const styles = StyleSheet.create({
         elevation: 6,
     },
     date_container: {
-        backgroundColor: colors.color_blue,
+        backgroundColor: colors.color_primary,
         marginHorizontal: 16,
-        borderRadius: 50,
-        paddingHorizontal: 10,
-        paddingVertical: 16,
+        borderRadius: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 20,
         alignItems: "center",
         shadowColor: colors.color_gray,
         shadowOffset: { width: 0, height: 4 },
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     icon_container: {
-        margin: 20,
+        margin: 16,
         justifyContent: "flex-start",
     },
     date_text: {
