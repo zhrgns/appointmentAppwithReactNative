@@ -226,7 +226,6 @@ const styles = StyleSheet.create({
         marginTop: 36,
         padding: 16,
         borderRadius: 20,
-        justifyContent: "center",
     },
 
     calendar_container: {
@@ -269,7 +268,7 @@ const styles = StyleSheet.create({
     },
     button_container: {
         flexDirection: "row",
-        marginBottom: 16,
+        marginBottom:126,
         paddingHorizontal: 24,
     },
     about: {
@@ -279,7 +278,7 @@ const styles = StyleSheet.create({
 
     title: {
         fontSize: 24,
-        fontFamily: "Mulish-Light",
+        fontFamily: "Mulish-Medium",
     },
     subTitle: {
         fontSize: 18,

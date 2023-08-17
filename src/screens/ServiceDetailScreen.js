@@ -75,7 +75,7 @@ export default function ServiceDetailScreen({ route, navigation }) {
                             ))}
                         </View>
 
-                        <Text style={styles.desc}>LOREM IPSUM</Text>
+                        <Text style={styles.desc}>{item.about}</Text>
                     </View>
                 </View>
 
@@ -152,12 +152,12 @@ const styles = StyleSheet.create({
     },
     button_container: {
         flexDirection: "row",
-        marginBottom: 16,
+        marginBottom: 126,
         marginHorizontal: 24,
     },
     title: {
         fontSize: 24,
-        fontFamily: "Mulish-Light",
+        fontFamily: "Mulish-Medium",
     },
     about: {
         fontSize: 20,

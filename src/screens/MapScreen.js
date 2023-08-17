@@ -1,45 +1,23 @@
 import React, { useEffect, useState } from "react";
 import MapView, { Callout, Circle, Marker } from "react-native-maps";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { getDatabase, ref, child, get } from "firebase/database";
+import {
+    StyleSheet,
+    View,
+    Text,
+    TouchableOpacity,
+    ActivityIndicator,
+} from "react-native";
 import * as Location from "expo-location";
 import { colors } from "../styles/Theme";
 import { Feather } from "@expo/vector-icons";
-
-const serviceList = [
-    {
-        id: 0,
-        firstName: "Elif",
-        lastName: "Gün",
-        district: "Ataşehir",
-        experience: 9,
-        expert_area: "Kişisel gelişim",
-        skills: ["Stres yönetimi", "Hedef belirleme", "Empati geliştirme"],
-        numberOf_books: 72,
-    },
-    {
-        id: 1,
-        firstName: "Ayşe",
-        lastName: "Yılmaz",
-        district: "Kadıköy",
-        experience: 8,
-        expert_area: "Sağlık",
-        skills: ["Terapi", "Stres yönetimi"],
-        numberOf_books: 63,
-    },
-];
-
-// İlçe isimlerine göre tahmini koordinatlar
-const districtCoordinates = {
-    Ataşehir: { latitude: 40.992982, longitude: 29.128364 },
-    Kadıköy: { latitude: 40.981389, longitude: 29.024444 },
-    // Diğer ilçeleri burada ekleyin
-};
-
-const getCoordinatesForDistrict = (district) => {
-    return districtCoordinates[district] || { latitude: 0, longitude: 0 };
-};
+import parseContentData from "../utils/ParseContentData";
+import { showMessage } from "react-native-flash-message";
+import districtCoordinates from "../utils/MapScreenUtils"
 
 export default function MapScreen({ navigation }) {
+    const [loading, setLoading] = useState(true);
+    const [serviceList, setServiceList] = useState([]);
     const [initialRegion, setInitialRegion] = useState(null);
 
     //get location
@@ -63,6 +41,31 @@ export default function MapScreen({ navigation }) {
         getLocationAsync();
     }, []);
 
+    //get serviceList
+    useEffect(() => {
+        const dbRef = ref(getDatabase());
+
+        get(child(dbRef, "services"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const serviceList = parseContentData(snapshot.val());
+                    setServiceList(serviceList);
+                } else {
+                    showMessage("Gösterecek veri yok", "info");
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, []);
+
+    const getCoordinatesForDistrict = (district) => {
+        return districtCoordinates[district] || { latitude: 0, longitude: 0 };
+    };
+
     //Navigate to detail
     const handleServiceSelect = (item) => {
         navigation.navigate("ServiceDetailScreen", { item });
@@ -70,7 +73,7 @@ export default function MapScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            {initialRegion ? (
+            {initialRegion && !loading ? (
                 <MapView
                     style={styles.map}
                     provider="google"
@@ -99,7 +102,8 @@ export default function MapScreen({ navigation }) {
                         >
                             <Callout style={styles.callout_container}>
                                 <TouchableOpacity
-                                    onPress={() => handleServiceSelect(service)}>
+                                    onPress={() => handleServiceSelect(service)}
+                                >
                                     <View style={styles.callout_button}>
                                         <Text style={styles.callout_title}>
                                             {service.firstName}{" "}
@@ -121,7 +125,11 @@ export default function MapScreen({ navigation }) {
                     ))}
                 </MapView>
             ) : (
-                <></>
+                <ActivityIndicator
+                    style={styles.loadingIndicator}
+                    size="large"
+                    color={colors.color_primary}
+                />
             )}
         </View>
     );

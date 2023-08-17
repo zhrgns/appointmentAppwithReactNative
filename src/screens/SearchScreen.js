@@ -16,7 +16,6 @@ export default function SearchScreen({ navigation }) {
     const [filteredServiceList, setFilteredServiceList] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("");
 
-
     useEffect(() => {
         const dbRef = ref(getDatabase());
 
@@ -130,6 +129,7 @@ export default function SearchScreen({ navigation }) {
                             data={filteredServiceList}
                             renderItem={renderService}
                             keyExtractor={(item) => item.id.toString()}
+                            contentContainerStyle={{ paddingBottom: 330 }} //scroll viewdan dolayı flatlist gömülüyordu
                         />
                     </View>
                 </View>
