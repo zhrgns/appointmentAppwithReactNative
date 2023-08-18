@@ -12,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 const CARD_WIDTH = sizes.width - 100;
 const CARD_HEIGHT = 150;
 
-export const CardCarousel = ({ list, onSelectCategory}) => {
+export const CardCarousel = ({ list, onSelectCategory }) => {
     return (
         <FlatList
             data={list}
@@ -20,16 +20,16 @@ export const CardCarousel = ({ list, onSelectCategory}) => {
             snapToInterval={CARD_WIDTH + 24}
             decelerationRate={"fast"}
             showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.icon}
+            keyExtractor={(item) => item.name}
             renderItem={({ item, index }) => {
                 return (
                     <TouchableOpacity
                         style={{
                             marginLeft: index === 0 ? 0 : 24,
                             marginRight: index === list.length - 1 ? 24 : 0,
-                            marginVertical:16
+                            marginVertical: 16,
                         }}
-                        onPress={onSelectCategory}
+                        onPress={() => onSelectCategory(item)}
                     >
                         <View style={styles.card}>
                             <View style={styles.box}>
@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
         elevation: 6,
     },
     title_box: {
-        left:24,
-        top:CARD_HEIGHT-75,
+        left: 24,
+        top: CARD_HEIGHT - 75,
         flex: 1,
         position: "absolute",
     },
@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
         color: colors.color_white,
     },
     icon: {
-        left:24,
+        left: 24,
         position: "absolute",
-        top:CARD_HEIGHT-115
-    }
+        top: CARD_HEIGHT - 115,
+    },
 });

@@ -10,11 +10,13 @@ import Category from "../components/Category";
 import { showTopMessage } from "../utils/ErrorHandler";
 import parseContentData from "../utils/ParseContentData";
 
-export default function SearchScreen({ navigation }) {
+export default function SearchScreen({ navigation, route }) {
     const [loading, setLoading] = useState(true);
     const [serviceList, setServiceList] = useState([]);
     const [filteredServiceList, setFilteredServiceList] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("");
+
+    const category = route.params?.category;
 
     useEffect(() => {
         const dbRef = ref(getDatabase());
@@ -24,7 +26,18 @@ export default function SearchScreen({ navigation }) {
                 if (snapshot.exists()) {
                     const serviceList = parseContentData(snapshot.val());
                     setServiceList(serviceList);
-                    setFilteredServiceList(serviceList);
+
+                    if (category) {
+                        const filteredList = filterServicesByCategory(
+                            category.name,
+                            serviceList
+                        );
+                        setSelectedCategory(category.name);
+                        setFilteredServiceList(filteredList);
+                    } else {
+                        setFilteredServiceList(serviceList);
+                    }
+
                 } else {
                     showTopMessage("Gösterecek veri yok", "info");
                 }
@@ -149,7 +162,6 @@ const styles = StyleSheet.create({
     },
     category_container: {
         marginHorizontal: 24,
-        marginVertical: 8,
     },
     list_container: {
         marginBottom: 32,

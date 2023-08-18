@@ -19,7 +19,7 @@ import {
     handleNotification,
 } from "../utils/NotificationService";
 
-export default function CalendarScreen({ route, navigation }) {
+export default function CalendarScreen() {
     const [loading, setLoading] = useState(true);
     const [appointmentList, setAppointmentList] = useState([]);
     const auth = getAuth();

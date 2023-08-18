@@ -3,7 +3,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import {
     View,
-    Button,
     Text,
     StyleSheet,
     ScrollView,
@@ -18,6 +17,7 @@ import CardAppointmentSmall from "../components/CardAppointmentSmall";
 import { sortAppointmentsByDateAndTime } from "../utils/CalendarUtils";
 import categories from "../utils/Categories";
 import { CardCarousel } from "../components/CardCarousel";
+import Category from "../components/Category";
 
 const userInfo = {
     id: 0,
@@ -95,7 +95,6 @@ export default function HomeScreen({ navigation }) {
         return get(dbRef)
             .then((snapshot) => {
                 if (snapshot.exists()) {
-                    // console.log(snapshot.val())
                     return snapshot.val();
                 } else {
                     return null;
@@ -119,6 +118,10 @@ export default function HomeScreen({ navigation }) {
 
     const handleSearch = () => {
         navigation.navigate("SearchScreen");
+    };
+
+    const handleCategorySelect = (selectedCategory) => {
+        navigation.navigate("SearchScreen", { category: selectedCategory });
     };
 
     return (
@@ -158,7 +161,10 @@ export default function HomeScreen({ navigation }) {
                     <View style={styles.app_container}>
                         <Text style={styles.text}>Sizin İçin</Text>
                         <View>
-                            <CardCarousel list={categories} />
+                            <CardCarousel
+                                list={categories}
+                                onSelectCategory={handleCategorySelect}
+                            />
                         </View>
 
                         {appointmentList.length === 0 ? (
@@ -184,14 +190,12 @@ export default function HomeScreen({ navigation }) {
                                 </View>
                             </View>
                         )}
-                        <Text style={styles.text}> Popüler Hizmetler</Text>
-                        <View>
-                            <CardCarousel
-                                list={categories
-                                    .slice()
-                                    .sort((a, b) => a.count - b.count)
-                                    .reverse()}
-                            />
+                        <Text style={styles.text}>Tüm Hizmetler</Text>
+                        <View style={styles.category_container}>
+                            {categories.map((category) => (
+                                <Category category={category} onPress={() => handleCategorySelect(category)}/>
+                            ))}
+                            
                         </View>
                     </View>
                 </View>
@@ -245,6 +249,10 @@ const styles = StyleSheet.create({
         flex: 1,
         marginVertical: 8,
     },
+    category_container:{
+        flexDirection:"row",
+        flexWrap:"wrap"
+    },
     header_text: {
         fontSize: 34,
         fontFamily: "Mulish-Medium",
@@ -280,9 +288,6 @@ const styles = StyleSheet.create({
         color: colors.color_primary,
     },
     loading_container: {
-        // position:"absolute",
-        // left:sizes.width/2,
-        // top:sizes.height/2,
         alignContent: "center",
         justifyContent: "center",
     },
