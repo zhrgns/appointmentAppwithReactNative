@@ -1,7 +1,6 @@
 import { getAuth } from "firebase/auth";
 import React from "react";
 import { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 import {
     View,
     Button,
@@ -11,7 +10,7 @@ import {
     ActivityIndicator,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { colors, sizes } from "../styles/Theme";
+import { colors } from "../styles/Theme";
 import SearchBar from "../components/SearchBar";
 import { child, get, getDatabase, ref } from "firebase/database";
 import parseContentData from "../utils/ParseContentData";
@@ -119,7 +118,7 @@ export default function HomeScreen({ navigation }) {
     }
 
     const handleSearch = () => {
-        nav.navigate("SearchScreen");
+        navigation.navigate("SearchScreen");
     };
 
     return (
@@ -188,7 +187,10 @@ export default function HomeScreen({ navigation }) {
                         <Text style={styles.text}> Popüler Hizmetler</Text>
                         <View>
                             <CardCarousel
-                                list={categories.slice().sort((a, b) => a.count - b.count).reverse()}
+                                list={categories
+                                    .slice()
+                                    .sort((a, b) => a.count - b.count)
+                                    .reverse()}
                             />
                         </View>
                     </View>
@@ -196,7 +198,10 @@ export default function HomeScreen({ navigation }) {
             )}
             {!isReady && (
                 <View style={styles.loading_container}>
-                    <ActivityIndicator size="large" color={colors.color_primary} />
+                    <ActivityIndicator
+                        size="large"
+                        color={colors.color_primary}
+                    />
                 </View>
             )}
         </ScrollView>
@@ -207,6 +212,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 48,
+        marginBottom: 120,
     },
     top_container: {
         paddingHorizontal: 24,

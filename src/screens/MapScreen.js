@@ -13,14 +13,13 @@ import { colors } from "../styles/Theme";
 import { Feather } from "@expo/vector-icons";
 import parseContentData from "../utils/ParseContentData";
 import { showMessage } from "react-native-flash-message";
-import districtCoordinates from "../utils/MapScreenUtils"
+import districtCoordinates from "../utils/MapScreenUtils";
 
 export default function MapScreen({ navigation }) {
     const [loading, setLoading] = useState(true);
     const [serviceList, setServiceList] = useState([]);
     const [initialRegion, setInitialRegion] = useState(null);
 
-    //get location
     useEffect(() => {
         async function getLocationAsync() {
             let { status } = await Location.requestForegroundPermissionsAsync();
@@ -76,8 +75,9 @@ export default function MapScreen({ navigation }) {
             {initialRegion && !loading ? (
                 <MapView
                     style={styles.map}
-                    provider="google"
-                    initialRegion={initialRegion}
+                    provider="google"                    initialRegion={initialRegion}
+                    loadingIndicatorColor={colors.color_primary}
+                    userLocationUpdateInterval={1000}
                     showsUserLocation={true}
                     showsMyLocationButton={true}
                 >

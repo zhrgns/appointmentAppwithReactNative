@@ -5,6 +5,7 @@ import { Feather, Ionicons } from "@expo/vector-icons";
 import { colors, sizes } from "../styles/Theme";
 
 export default function ServiceDetailScreen({ route, navigation }) {
+    
     const { item } = route.params;
 
     const shareContent = async () => {
@@ -67,8 +68,8 @@ export default function ServiceDetailScreen({ route, navigation }) {
 
                         <View style={styles.skills_container}>
                             {item.skills.map((skill, index) => (
-                                <View style={styles.chip_container}>
-                                    <Text key={index} style={styles.chips}>
+                                <View  key={index} style={styles.chip_container}>
+                                    <Text style={styles.chips}>
                                         {skill}
                                     </Text>
                                 </View>

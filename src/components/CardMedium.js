@@ -44,10 +44,8 @@ export default function CardMedium({ service, onSelect, image_source }) {
                         showsHorizontalScrollIndicator={false}
                     >
                         {service.skills.map((skill, index) => (
-                            <View style={styles.chip_container}>
-                                <Text key={index} style={styles.chips}>
-                                    {skill}
-                                </Text>
+                            <View key={index} style={styles.chip_container}>
+                                <Text style={styles.chips}>{skill}</Text>
                             </View>
                         ))}
                     </ScrollView>

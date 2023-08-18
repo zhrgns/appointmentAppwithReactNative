@@ -1,19 +1,13 @@
 import React from "react";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-import {
-    View,
-    Text,
-    StyleSheet,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    Image,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "../../firebaseConfig";
 import { Feather } from "@expo/vector-icons";
 import CardSmall from "../components/CardSmall";
 import { showTopMessage } from "../utils/ErrorHandler";
-import {colors} from "../styles/Theme";
+import { colors } from "../styles/Theme";
 
 export default function UserProfileScreen({ navigation }) {
     const userInfo = {
@@ -35,7 +29,6 @@ export default function UserProfileScreen({ navigation }) {
     }
 
     // Navigation
-
     function goToLogin() {
         navigation.navigate("LoginScreen");
     }
@@ -49,27 +42,22 @@ export default function UserProfileScreen({ navigation }) {
             <Text style={styles.header_text}>Profilim</Text>
 
             <View style={styles.section_container}>
-                <TouchableWithoutFeedback>
-                    <View style={styles.card}>
+                <View style={styles.card}>
+                    <TouchableOpacity>
                         <Image
                             source={require("../../assets/user-profile.png")}
                             style={styles.image}
                         />
-
-                        <View style={styles.text_container}>
-                            <View style={styles.title_container}>
-                                <Text style={styles.title}>
-                                    {userInfo.firstName} {userInfo.lastName}
-                                </Text>
-                                <Text style={styles.desc}>
-                                    {userInfo.district}
-                                </Text>
-                            </View>
+                    </TouchableOpacity>
+                    <View style={styles.text_container}>
+                        <View style={styles.title_container}>
+                            <Text style={styles.title}>
+                                {userInfo.firstName} {userInfo.lastName}
+                            </Text>
+                            <Text style={styles.desc}>{userInfo.district}</Text>
                         </View>
                     </View>
-                </TouchableWithoutFeedback>
-                <View />
-
+                </View>
                 <CardSmall iconName={"user"} text={"Hesap Bilgilerim"} />
                 <CardSmall
                     iconName={"list"}

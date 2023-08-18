@@ -137,6 +137,7 @@ export default Navigation = () => {
     const [user, setUser] = useState(getAuth(app).currentUser);
     const auth = getAuth();
 
+    //check authentication
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
             setUser(!!user);
