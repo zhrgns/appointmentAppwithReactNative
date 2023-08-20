@@ -1,11 +1,19 @@
-import { View, StyleSheet, Text, Image, ScrollView, Alert } from "react-native";
+import {
+    View,
+    StyleSheet,
+    Text,
+    Image,
+    ScrollView,
+    Alert,
+    ActivityIndicator,
+} from "react-native";
 import Button from "../components/button/Button";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Calendar } from "react-native-calendars";
 import moment from "moment";
 import { colors } from "../styles/Theme";
 import { getAuth } from "firebase/auth";
-import { getDatabase, push, ref, get, child } from "firebase/database";
+import { getDatabase, push, ref, get, child, update } from "firebase/database";
 import { showTopMessage } from "../utils/ErrorHandler";
 import TimeSlot from "../components/TimeSlot";
 import parseContentData from "../utils/ParseContentData";
@@ -17,10 +25,15 @@ import {
 
 export default function ServiceBookingScreen({ route, navigation }) {
     const { item } = route.params;
+    const serviceId = item.id;
+    const scrollViewRef = useRef(null);
 
     const [loading, setLoading] = useState(true);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
+    const [timeList, setTimeList] = useState([]);
+    const [serviceTimeList, setServiceTimeList] = useState([]);
+    const [bookedApps, setBookedApps] = useState([]);
 
     const today = moment().format("YYYY-MM-DD");
     const threeMonthsLater = moment().add(3, "months").format("YYYY-MM-DD");
@@ -28,33 +41,86 @@ export default function ServiceBookingScreen({ route, navigation }) {
     const auth = getAuth();
     const user = auth.currentUser;
 
-    const [apptimeList, setApptimeList] = useState([]);
+    const getTimeListFromDatabase = async () => {
+        setLoading(true);
+        try {
+            const dbRef = ref(getDatabase());
+            const snapshot = await get(child(dbRef, "times"));
 
-    //notification
+            if (snapshot.exists()) {
+                const timeList = parseContentData(snapshot.val());
+                setTimeList(timeList);
+            } else {
+                console.log("Veri yok");
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const getServiceAppointments = async (day) => {
+        setLoading(true);
+        setServiceTimeList([]);
+        try {
+            const appointmentsRef = ref(getDatabase(), "userAppointments");
+            const snapshot = await get(appointmentsRef);
+
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                let serviceBookings = [];
+
+                Object.keys(data).forEach((user) => {
+                    const userAppointments = data[user];
+
+                    Object.keys(userAppointments).forEach((appointmentId) => {
+                        const app = userAppointments[appointmentId];
+
+                        if (
+                            app.serviceId === serviceId &&
+                            app.bookedDate === day
+                        ) {
+                            serviceBookings.push(app);
+                        }
+                    });
+                });
+
+                setBookedApps(serviceBookings);
+                const availableTimes = timeList.map((time) => {
+                    const bookedHour = serviceBookings.some(
+                        (app) => app.bookedTime === time.apptime
+                    );
+
+                    return {
+                        ...time,
+                        isBooked: bookedHour ? true : false,
+                    };
+                });
+
+                setServiceTimeList(availableTimes);
+            } else {
+                console.log("Veri yok");
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+            return true;
+        }
+    };
+
     useEffect(() => {
         configureNotifications();
     }, []);
 
-    //get times from database
     useEffect(() => {
-        const dbRef = ref(getDatabase());
+        const fetchData = async () => {
+            await getTimeListFromDatabase();
+        };
 
-        get(child(dbRef, "times"))
-            .then((snapshot) => {
-                if (snapshot.exists()) {
-                    const apptimeList = parseContentData(snapshot.val());
-                    setApptimeList(apptimeList);
-                } else {
-                    showTopMessage("Gösterecek veri yok", "info");
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, []);
+        fetchData();
+    }, [selectedDate]);
 
     const handleBooking = () => {
         if (selectedDate && selectedTime && user) {
@@ -106,21 +172,34 @@ export default function ServiceBookingScreen({ route, navigation }) {
             .then(async () => {
                 showTopMessage("Randevunuz oluşturuldu!", "success");
 
-                handleNotification ("Yaklaşan randevunuz",`Randevunuz ${bookedDate} , ${bookedTime} saati için oluşturuldu.`);
+                handleNotification(
+                    "Yaklaşan randevunuz",
+                    `Randevunuz ${bookedDate} , ${bookedTime} saati için oluşturuldu.`
+                );
                 goToCompletedScreen();
                 setSelectedTime(null);
                 setSelectedDate(null);
             })
             .catch((error) => {
                 showTopMessage("Bir hata oluştu.", "info");
-                console.error(error)
+                console.error(error);
                 setSelectedTime(null);
                 setSelectedDate(null);
             });
     };
 
-    const onDateSelect = (day) => {
-        setSelectedDate(day.dateString);
+    const onDateSelect = async (day) => {
+        try {
+            setLoading(true);
+            setSelectedDate(day.dateString);
+
+            const timeListData = await getTimeListFromDatabase();
+            const appsForDay = await getServiceAppointments(day.dateString);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const onTimeSelect = (time) => {
@@ -137,7 +216,16 @@ export default function ServiceBookingScreen({ route, navigation }) {
 
     return (
         <View style={styles.out_container}>
-            <ScrollView nestedScrollEnabled={true} style={styles.container}>
+            <ScrollView
+                nestedScrollEnabled={true}
+                ref={scrollViewRef}
+                style={styles.container}
+                onContentSizeChange={(contentWidth, contentHeight) => {
+                    if (!loading && scrollViewRef.current) {
+                        scrollViewRef.current.scrollToEnd({ animated: true });
+                    }
+                }}
+            >
                 {/* Header */}
                 <View style={styles.header_container}>
                     <Image
@@ -170,7 +258,7 @@ export default function ServiceBookingScreen({ route, navigation }) {
 
                 <Calendar
                     style={styles.calendar_container}
-                    onDayPress={onDateSelect}
+                    onDayPress={!loading ? onDateSelect : undefined}
                     markedDates={{
                         [selectedDate]: {
                             selected: true,
@@ -190,19 +278,32 @@ export default function ServiceBookingScreen({ route, navigation }) {
 
                 {selectedDate && (
                     <View style={styles.bottom_container}>
-                        <View style={styles.text_container}>
-                            <Text style={styles.subTitle}>Saat Seçin:</Text>
-                        </View>
-                        <View style={styles.time_container}>
-                            {apptimeList.map((time) => (
-                                <TimeSlot
-                                    key={time.id.toString()}
-                                    time={time}
-                                    onPress={onTimeSelect}
-                                    isSelected={selectedTime === time.apptime}
-                                />
-                            ))}
-                        </View>
+                        {loading ? (
+                            <ActivityIndicator
+                                style={styles.loadingIndicator}
+                            />
+                        ) : (
+                            <>
+                                <View style={styles.text_container}>
+                                    <Text style={styles.subTitle}>
+                                        Saat Seçin:
+                                    </Text>
+                                </View>
+                                <View style={styles.time_container}>
+                                    {serviceTimeList.map((time) => (
+                                        <TimeSlot
+                                            key={time.id.toString()}
+                                            time={time}
+                                            onPress={onTimeSelect}
+                                            isSelected={
+                                                selectedTime === time.apptime
+                                            }
+                                            isBooked={time.isBooked}
+                                        />
+                                    ))}
+                                </View>
+                            </>
+                        )}
                     </View>
                 )}
             </ScrollView>
@@ -268,7 +369,7 @@ const styles = StyleSheet.create({
     },
     button_container: {
         flexDirection: "row",
-        marginBottom:126,
+        marginBottom: 126,
         paddingHorizontal: 24,
     },
     about: {

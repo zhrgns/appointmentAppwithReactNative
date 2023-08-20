@@ -193,7 +193,10 @@ export default function HomeScreen({ navigation }) {
                         <Text style={styles.text}>Tüm Hizmetler</Text>
                         <View style={styles.category_container}>
                             {categories.map((category) => (
-                                <Category category={category} onPress={() => handleCategorySelect(category)}/>
+                                <Category 
+                                category={category} 
+                                key={category.name}
+                                onPress={() => handleCategorySelect(category)}/>
                             ))}
                             
                         </View>
