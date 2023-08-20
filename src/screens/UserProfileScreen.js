@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         color: colors.color_gray,
     },
     section_container: {
-        flex: 1,
+
     },
     logout_container: {
         flexDirection: "row",
@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
         fontFamily: "Mulish-Medium",
     },
     logo_container: {
-        flex: 1,
         flexDirection: "column-reverse",
         alignItems: "center",
     },
