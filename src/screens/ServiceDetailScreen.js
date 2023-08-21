@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Image, ScrollView, Share, TouchableOpacity } fr
 import Button from "../components/button/Button";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { colors, sizes } from "../styles/Theme";
+import userImages from "../utils/UserImageUtils";
 
 export default function ServiceDetailScreen({ route, navigation }) {
     
@@ -40,7 +41,7 @@ export default function ServiceDetailScreen({ route, navigation }) {
                 <View style={styles.header_container}>
                     <Image
                         style={styles.image_container}
-                        source={require("../../assets/user-profile.png")}
+                        source={userImages[item.id]}
                     />
                     <View>
                         <View style={styles.title_container}>

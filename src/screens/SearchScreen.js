@@ -9,6 +9,7 @@ import categories from "../utils/Categories";
 import Category from "../components/Category";
 import { showTopMessage } from "../utils/ErrorHandler";
 import parseContentData from "../utils/ParseContentData";
+import userImages from "../utils/UserImageUtils"
 
 export default function SearchScreen({ navigation, route }) {
     const [loading, setLoading] = useState(true);
@@ -37,7 +38,6 @@ export default function SearchScreen({ navigation, route }) {
                     } else {
                         setFilteredServiceList(serviceList);
                     }
-
                 } else {
                     showTopMessage("Gösterecek veri yok", "info");
                 }
@@ -68,7 +68,7 @@ export default function SearchScreen({ navigation, route }) {
     //Render to flatlist
     const renderService = ({ item }) => (
         <CardMedium
-            image_source={require("../../assets/user-profile.png")}
+            image_source={userImages[item.id]}
             service={item}
             key={item.id}
             onSelect={() => handleServiceSelect(item)}

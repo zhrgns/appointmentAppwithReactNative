@@ -22,6 +22,7 @@ import {
     configureNotifications,
     handleNotification,
 } from "../utils/NotificationService";
+import userImages from "../utils/UserImageUtils";
 
 export default function ServiceBookingScreen({ route, navigation }) {
     const { item } = route.params;
@@ -230,7 +231,7 @@ export default function ServiceBookingScreen({ route, navigation }) {
                 <View style={styles.header_container}>
                     <Image
                         style={styles.image_container}
-                        source={require("../../assets/user-profile.png")}
+                        source={userImages[item.id]}
                     />
                     <View>
                         <View style={styles.title_container}>

@@ -1,13 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { colors } from "../styles/Theme";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 
 export default function UploadImage() {
     const [image, setImage] = useState(null);
-    const [status, requestPermission] =
-        ImagePicker.useMediaLibraryPermissions();
 
     const addImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -16,7 +14,6 @@ export default function UploadImage() {
             aspect: [4, 3],
             quality: 1,
         });
-        console.log(JSON.stringify(result));
         if (!result.canceled) {
             setImage(result.assets[0].uri);
         } else {
@@ -26,7 +23,11 @@ export default function UploadImage() {
 
     return (
         <View style={styles.container}>
-            {image && <Image source={{ uri: image }} style={styles.image} />}
+            {image ? (
+                <Image source={{ uri: image }} style={styles.image} />
+            ) : (
+                <Image source={require("../../assets/user-profile.png")} style={styles.image} />
+            )}
             <View style={styles.upload_button_container}>
                 <TouchableOpacity
                     onPress={addImage}

@@ -8,11 +8,16 @@ import {
     Image,
 } from "react-native";
 import { colors, sizes } from "../styles/Theme";
+import { Animated } from "react-native";
 
 const CARD_WIDTH = sizes.width - 100;
 const CARD_HEIGHT = 180;
 
 export const CardCarousel = ({ list, onSelectCategory }) => {
+    const av = new Animated.Value(0);
+    av.addListener(() => {
+        return;
+    });
     return (
         <FlatList
             data={list}
@@ -20,6 +25,7 @@ export const CardCarousel = ({ list, onSelectCategory }) => {
             snapToInterval={CARD_WIDTH + 24}
             decelerationRate={"fast"}
             showsHorizontalScrollIndicator={false}
+            initialNumToRender={3}
             keyExtractor={(item) => item.name}
             renderItem={({ item, index }) => {
                 return (
@@ -109,9 +115,9 @@ const styles = StyleSheet.create({
         color: colors.color_primary,
     },
     button_box: {
-        position:"absolute",
+        position: "absolute",
         justifyContent: "flex-end",
-        bottom:0,
+        bottom: 0,
         paddingVertical: 16,
         paddingHorizontal: 16,
     },
