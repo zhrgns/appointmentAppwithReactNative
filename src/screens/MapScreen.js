@@ -75,7 +75,8 @@ export default function MapScreen({ navigation }) {
             {initialRegion && !loading ? (
                 <MapView
                     style={styles.map}
-                    provider="google"                    initialRegion={initialRegion}
+                    provider="google"
+                    initialRegion={initialRegion}
                     loadingIndicatorColor={colors.color_primary}
                     userLocationUpdateInterval={1000}
                     showsUserLocation={true}
@@ -126,7 +127,7 @@ export default function MapScreen({ navigation }) {
                 </MapView>
             ) : (
                 <ActivityIndicator
-                    style={styles.loadingIndicator}
+                    style={styles.loading_container}
                     size="large"
                     color={colors.color_primary}
                 />
@@ -163,5 +164,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         padding: 8,
+    },
+    loading_container: {
+        alignContent: "center",
+        justifyContent: "center",
     },
 });

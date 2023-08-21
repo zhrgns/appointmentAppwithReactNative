@@ -20,6 +20,7 @@
     "expo": "^49.0.3",
     "expo-device": "~5.4.0",
     "expo-font": "^11.4.0",
+    "expo-image-picker": "^14.3.2",
     "expo-location": "~16.1.0",
     "expo-notifications": "~0.20.1",
     "expo-splash-screen": "~0.20.5",

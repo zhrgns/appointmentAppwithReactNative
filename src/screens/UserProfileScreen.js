@@ -1,5 +1,4 @@
 import React from "react";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { getAuth, signOut } from "firebase/auth";
@@ -8,6 +7,7 @@ import { Feather } from "@expo/vector-icons";
 import CardSmall from "../components/CardSmall";
 import { showTopMessage } from "../utils/ErrorHandler";
 import { colors } from "../styles/Theme";
+import UploadImage from "../components/UploadImage";
 
 export default function UserProfileScreen({ navigation }) {
     const userInfo = {
@@ -42,46 +42,49 @@ export default function UserProfileScreen({ navigation }) {
             <Text style={styles.header_text}>Profilim</Text>
 
             <View style={styles.section_container}>
-                <View style={styles.card}>
-                    <TouchableOpacity>
-                        <Image
-                            source={require("../../assets/user-profile.png")}
-                            style={styles.image}
-                        />
-                    </TouchableOpacity>
-                    <View style={styles.text_container}>
-                        <View style={styles.title_container}>
-                            <Text style={styles.title}>
-                                {userInfo.firstName} {userInfo.lastName}
-                            </Text>
-                            <Text style={styles.desc}>{userInfo.district}</Text>
-                        </View>
+
+                <View style={styles.user_card}>
+                    <View style={styles.title_container}>
+                        <Text style={styles.title}>
+                            {userInfo.firstName} {userInfo.lastName}
+                        </Text>
+                        <Text style={styles.desc}>{userInfo.district}</Text>
                     </View>
+                    <UploadImage/>
                 </View>
-                <CardSmall iconName={"user"} text={"Hesap Bilgilerim"} />
+
+                <CardSmall
+                    iconName={"user"}
+                    text={"Hesap Bilgilerim"}
+                    onPress={goToBookingHistory}
+                />
                 <CardSmall
                     iconName={"list"}
                     text={"Geçmiş Randevularım"}
                     onPress={goToBookingHistory}
                 />
-                <CardSmall iconName={"message-square"} text={"Geri Bildirim"} />
+                <CardSmall
+                    iconName={"message-square"}
+                    text={"Geri Bildirim"}
+                    onPress={goToBookingHistory}
+                />
 
                 <View style={styles.logo_container}>
                     <Text style={styles.logo_text}>AppointMe</Text>
+                    <TouchableOpacity
+                        style={styles.logout_container}
+                        onPress={handleSignOut}
+                    >
+                        <Text style={styles.text}>Çıkış Yap </Text>
+                        <Feather
+                            style={styles.icon}
+                            name="log-out"
+                            size={24}
+                            color="black"
+                        />
+                    </TouchableOpacity>
                 </View>
             </View>
-            <TouchableOpacity
-                style={styles.logout_container}
-                onPress={handleSignOut}
-            >
-                <Text style={styles.text}>Çıkış Yap </Text>
-                <Feather
-                    style={styles.icon}
-                    name="log-out"
-                    size={24}
-                    color="black"
-                />
-            </TouchableOpacity>
         </View>
     );
 }
@@ -91,23 +94,17 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 48,
     },
-    card: {
+    user_card: {
         flexDirection: "row",
         borderRadius: 20,
-        padding: 16,
         marginHorizontal: 24,
         marginBottom: 16,
         backgroundColor: colors.color_white,
-        padding: 16,
+        padding:16
     },
-    image: {
-        marginRight: 16,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 50,
-        overflow: "hidden",
-        width: 72,
-        height: 72,
+    section_container: {
+        flex: 1,
+        marginBottom: 16,
     },
     text_container: {
         flex: 1,
@@ -115,6 +112,7 @@ const styles = StyleSheet.create({
     title_container: {
         flex: 1,
         justifyContent: "center",
+        paddingHorizontal:16
     },
     title: {
         fontSize: 18,
@@ -125,14 +123,10 @@ const styles = StyleSheet.create({
         fontFamily: "Mulish-Light",
         color: colors.color_gray,
     },
-    section_container: {
-
-    },
     logout_container: {
         flexDirection: "row",
-        margin: 16,
-        alignItems: "center",
         justifyContent: "center",
+        alignItems:"center"
     },
     header_text: {
         marginHorizontal: 24,
@@ -141,7 +135,8 @@ const styles = StyleSheet.create({
         fontFamily: "Mulish-Medium",
     },
     logo_container: {
-        flexDirection: "column-reverse",
+        flex: 1,
+        marginVertical: 24,
         alignItems: "center",
     },
     logo_text: {
