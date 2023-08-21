@@ -7,6 +7,7 @@ import {
     StyleSheet,
     ScrollView,
     ActivityIndicator,
+    ImageBackground,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { colors } from "../styles/Theme";
@@ -138,7 +139,11 @@ export default function HomeScreen({ navigation }) {
                                 onPress={goToNotifications}
                             />
                         </View>
-                        <View style={styles.card_container}>
+                        <ImageBackground
+                            style={styles.card_container}
+                            imageStyle={{ borderRadius: 20 , overflow: "hidden"}}
+                            source={require("../../assets/backgroundsearch.png")}
+                        >
                             <View style={styles.welcome_container}>
                                 <Text style={styles.welcome_text}>
                                     Hoşgeldin
@@ -148,7 +153,7 @@ export default function HomeScreen({ navigation }) {
                                 </Text>
                             </View>
                             <Text style={styles.detail_text}>
-                                Bir hizmet mi arıyorsun?
+                                Haftalık programını beraber yapalım
                             </Text>
                             <View style={styles.search_container}>
                                 <SearchBar
@@ -156,7 +161,7 @@ export default function HomeScreen({ navigation }) {
                                     onSearch={handleSearch}
                                 />
                             </View>
-                        </View>
+                        </ImageBackground>
                     </View>
                     <View style={styles.app_container}>
                         <Text style={styles.text}>Sizin İçin</Text>
@@ -193,12 +198,14 @@ export default function HomeScreen({ navigation }) {
                         <Text style={styles.text}>Tüm Hizmetler</Text>
                         <View style={styles.category_container}>
                             {categories.map((category) => (
-                                <Category 
-                                category={category} 
-                                key={category.name}
-                                onPress={() => handleCategorySelect(category)}/>
+                                <Category
+                                    category={category}
+                                    key={category.name}
+                                    onPress={() =>
+                                        handleCategorySelect(category)
+                                    }
+                                />
                             ))}
-                            
                         </View>
                     </View>
                 </View>
@@ -226,8 +233,6 @@ const styles = StyleSheet.create({
     },
     card_container: {
         marginVertical: 16,
-        backgroundColor: colors.color_primary,
-        borderRadius: 20,
         padding: 16,
     },
     header_container: {
@@ -236,13 +241,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     welcome_container: {
-        marginTop: 48,
+        marginTop:8,
+        marginBottom: 64,
         flexDirection: "row",
         alignItems: "center",
     },
     search_container: {
         flex: 1,
-        paddingBottom: 16,
+        paddingBottom: 8,
     },
     app_container: {
         flex: 1,
@@ -252,9 +258,10 @@ const styles = StyleSheet.create({
         flex: 1,
         marginVertical: 8,
     },
-    category_container:{
-        flexDirection:"row",
-        flexWrap:"wrap"
+    category_container: {
+        marginVertical:8,
+        flexDirection: "row",
+        flexWrap: "wrap",
     },
     header_text: {
         fontSize: 34,
