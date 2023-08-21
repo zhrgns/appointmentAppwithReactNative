@@ -1,13 +1,34 @@
-import React from "react";
-import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import React, { useRef } from "react";
+import { TouchableOpacity, Text, StyleSheet,Animated} from "react-native";
 import { colors } from "../styles/Theme";
 
 const TimeSlot = ({ time, onPress, isSelected, isBooked }) => {
+    const scaleValue = useRef(new Animated.Value(1)).current;
+
     const handlePress = () => {
         if (!isBooked) {
             onPress(time.apptime);
         }
     };
+
+    const handlePressIn = () => {
+        if (!isBooked) {
+            Animated.spring(scaleValue, {
+                toValue: 1.2,
+                useNativeDriver: true,
+            }).start();
+        }
+    };
+
+    const handlePressOut = () => {
+        if (!isBooked) {
+            Animated.spring(scaleValue, {
+                toValue: 1,
+                useNativeDriver: true,
+            }).start();
+        }
+    };
+
 
     return (
         <TouchableOpacity
@@ -15,19 +36,23 @@ const TimeSlot = ({ time, onPress, isSelected, isBooked }) => {
                 styles.container,
                 isSelected && styles.selectedButton,
                 isBooked && styles.bookedButton,
+                { transform: [{ scale: scaleValue }] },
             ]}
             onPress={handlePress}
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}
             disabled={isBooked}
         >
-            <Text
+            <Animated.Text
                 style={[
                     styles.timeText,
                     isSelected && styles.selectedText,
                     isBooked && styles.bookedText,
                 ]}
+                
             >
                 {time.apptime}
-            </Text>
+            </Animated.Text>
         </TouchableOpacity>
     );
 };
