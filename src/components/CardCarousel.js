@@ -5,12 +5,12 @@ import {
     TouchableOpacity,
     StyleSheet,
     FlatList,
+    Image,
 } from "react-native";
 import { colors, sizes } from "../styles/Theme";
-import { Ionicons } from "@expo/vector-icons";
 
 const CARD_WIDTH = sizes.width - 100;
-const CARD_HEIGHT = 150;
+const CARD_HEIGHT = 180;
 
 export const CardCarousel = ({ list, onSelectCategory }) => {
     return (
@@ -32,19 +32,30 @@ export const CardCarousel = ({ list, onSelectCategory }) => {
                         onPress={() => onSelectCategory(item)}
                     >
                         <View style={styles.card}>
-                            <View style={styles.box}>
-                                <Ionicons
-                                    name={item.icon}
-                                    size={36}
-                                    color={colors.color_white}
-                                    style={styles.icon}
-                                />
-                                <View style={styles.title_box}>
-                                    <Text style={styles.category}>
-                                        {item.name},
+                            <View style={styles.button_box}>
+                                <TouchableOpacity
+                                    style={styles.button}
+                                    onPress={() => onSelectCategory(item)}
+                                >
+                                    <Text style={styles.button_text}>
+                                        İncele
                                     </Text>
-                                    <Text style={styles.count}>
-                                        {item.count} Hizmetveren
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.image_box}>
+                                <Image
+                                    source={item.image}
+                                    style={styles.category_image}
+                                />
+                            </View>
+                            <View style={styles.title_box}>
+                                <Text style={styles.category}>
+                                    {item.name},
+                                </Text>
+                                <View style={styles.countDetail_container}>
+                                    <Text style={styles.detail}>
+                                        {item.count}
+                                        {" Danışman "}
                                     </Text>
                                 </View>
                             </View>
@@ -59,34 +70,62 @@ export const CardCarousel = ({ list, onSelectCategory }) => {
 const styles = StyleSheet.create({
     card: {
         flex: 1,
+        flexDirection: "row",
         width: CARD_WIDTH,
         height: CARD_HEIGHT,
         borderRadius: 20,
-        backgroundColor: colors.color_light_gray,
+        backgroundColor: colors.color_white,
         shadowColor: colors.color_gray,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.1,
-        elevation: 6,
+        elevation: 4,
+        alignSelf: "flex-end",
+    },
+    image_box: {
+        flex: 1,
+        paddingVertical: 24,
+    },
+    category_image: {
+        flex: 1,
+        resizeMode: "contain",
     },
     title_box: {
         left: 24,
-        top: CARD_HEIGHT - 75,
-        flex: 1,
+        top: 16,
         position: "absolute",
     },
     category: {
-        fontSize: 24,
+        fontSize: 20,
         fontFamily: "Mulish-Medium",
-        color: colors.color_white,
+        color: colors.color_primary,
     },
-    count: {
-        fontSize: 18,
+    countDetail_container: {
+        flexDirection: "row",
+        alignItems: "baseline",
+    },
+    detail: {
+        fontSize: 14,
         fontFamily: "Mulish-Light",
-        color: colors.color_white,
+        color: colors.color_primary,
     },
-    icon: {
-        left: 24,
-        position: "absolute",
-        top: CARD_HEIGHT - 115,
+    button_box: {
+        position:"absolute",
+        justifyContent: "flex-end",
+        bottom:0,
+        paddingVertical: 16,
+        paddingHorizontal: 16,
+    },
+    button: {
+        backgroundColor: colors.color_primary,
+        borderRadius: 20,
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        justifyContent: "center",
+        alignSelf: "flex-start",
+    },
+    button_text: {
+        fontSize: 16,
+        fontFamily: "Mulish-Bold",
+        color: colors.color_white,
     },
 });
