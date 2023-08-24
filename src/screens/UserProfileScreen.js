@@ -37,6 +37,14 @@ export default function UserProfileScreen({ navigation }) {
         navigation.navigate("BookingHistoryScreen");
     }
 
+    function goToUserInfos() {
+        navigation.navigate("UserInfosScreen");
+    }
+
+    function goToFeedBack() {
+        navigation.navigate("FeedBackScreen");
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.header_text}>Profilim</Text>
@@ -56,7 +64,7 @@ export default function UserProfileScreen({ navigation }) {
                 <CardSmall
                     iconName={"user"}
                     text={"Hesap Bilgilerim"}
-                    onPress={goToBookingHistory}
+                    onPress={() => (goToUserInfos)}
                 />
                 <CardSmall
                     iconName={"list"}
@@ -66,7 +74,7 @@ export default function UserProfileScreen({ navigation }) {
                 <CardSmall
                     iconName={"message-square"}
                     text={"Geri Bildirim"}
-                    onPress={goToBookingHistory}
+                    onPress={goToFeedBack}
                 />
 
                 <View style={styles.logo_container}>

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-export default function UserInfosScreen({ navigation }) {
+export default function FeedBackScreen({ navigation }) {
 
     return (
         <View style={styles.container}>

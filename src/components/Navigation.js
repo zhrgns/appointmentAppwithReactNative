@@ -51,10 +51,14 @@ function AuthStack() {
                 component={BookingHistoryScreen}
                 options={{ headerShown: false }}
             />
-
             <Stack.Screen
                 name="UserInfosScreen"
                 component={UserInfosScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="FeedBackScreen"
+                component={FeedBackScreen}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>
@@ -110,6 +114,16 @@ function HomeStack() {
             <Stack.Screen
                 name="SearchScreen"
                 component={SearchScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="ServiceDetailScreen"
+                component={ServiceDetailScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="ServiceBookingScreen"
+                component={ServiceBookingScreen}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

@@ -63,8 +63,6 @@ export default function CalendarScreen() {
                                 sortAppointmentsByDateAndTime(appointmentList)
                             );
                         });
-                } else {
-                    console.log("Gösterecek veri yok");
                 }
             })
             .catch((error) => {
@@ -105,6 +103,9 @@ export default function CalendarScreen() {
                     "Randevu iptali",
                     ` ${appointment.appType} randevunuz iptal edildi.`
                 );
+                if (appointmentList.length == 1) {
+                    setAppointmentList([]);
+                }
                 fetchData();
             })
             .catch((error) => {
