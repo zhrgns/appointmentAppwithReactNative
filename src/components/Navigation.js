@@ -8,11 +8,12 @@ import CalendarScreen from "../screens/CalendarScreen";
 import SearchScreen from "../screens/SearchScreen";
 import ServiceDetailScreen from "../screens/ServiceDetailScreen";
 import ServiceBookingScreen from "../screens/ServiceBookingScreen";
-import UserProfileScreen from "../screens/UserProfileScreen";
-import BookingHistoryScreen from "../screens/BookingHistoryScreen";
-import UserInfosScreen from "../screens/UserInfosScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import MapScreen from "../screens/MapScreen";
+import UserProfileScreen from "../screens/UserProfileScreen";
+import UserInfosScreen from "../screens/UserInfosScreen";
+import BookingHistoryScreen from "../screens/BookingHistoryScreen";
+import FeedBackScreen from "../screens/FeedBackScreen";
 
 import app from "../../firebaseConfig";
 import iconPref, { customTabButton } from "../utils/NavBarUtils";

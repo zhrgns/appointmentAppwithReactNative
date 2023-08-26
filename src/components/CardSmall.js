@@ -9,9 +9,9 @@ import {
 import { colors } from "../styles/Theme";
 import { Feather } from "@expo/vector-icons";
 
-export default function CardSmall({ text, onPress, iconName }) {
+export default function CardSmall({ text, iconName }) {
     return (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity >
             <View style={styles.card}>
                 <View style={styles.icon_container}>
                     <Feather
