@@ -33,6 +33,11 @@ export default function UserProfileScreen({ navigation }) {
         navigation.navigate("LoginScreen");
     }
 
+    // Navigation
+    function goToBookingHistory() {
+        navigation.navigate("BookingHistoryScreen");
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.header_text}>Profilim</Text>
@@ -50,10 +55,12 @@ export default function UserProfileScreen({ navigation }) {
                 </View>
 
                 <CardSmall
+                
                     iconName={"user"}
                     text={"Hesap Bilgilerim"}
                 />
                 <CardSmall
+                    // onSelect={goToBookingHistory}
                     iconName={"list"}
                     text={"Geçmiş Randevularım"}
                 />

@@ -9,7 +9,7 @@ import {
     ActivityIndicator,
 } from "react-native";
 import * as Location from "expo-location";
-import { colors } from "../styles/Theme";
+import { colors, sizes } from "../styles/Theme";
 import { Feather } from "@expo/vector-icons";
 import parseContentData from "../utils/ParseContentData";
 import { showMessage } from "react-native-flash-message";
@@ -166,7 +166,8 @@ const styles = StyleSheet.create({
         padding: 8,
     },
     loading_container: {
-        alignContent: "center",
-        justifyContent: "center",
+        position:"absolute",
+        top:sizes.height/2,
+        left:sizes.width/2,
     },
 });

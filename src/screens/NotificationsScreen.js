@@ -15,13 +15,6 @@ import CardAppointmentSmall from "../components/CardAppointmentSmall";
 import { sortAppointmentsByDateAndTime } from "../utils/CalendarUtils";
 
 
-const userInfo = {
-    id: 0,
-    firstName: "Zehra",
-    lastName: "Güneş",
-    district: "Ataşehir",
-};
-
 export default function NotificationsScreen({ navigation }) {
     const [appointmentList, setAppointmentList] = useState([]);
 
@@ -31,14 +24,12 @@ export default function NotificationsScreen({ navigation }) {
     const auth = getAuth();
     const user = auth.currentUser;
 
-    // //Kullanıcı oturumu
     useEffect(() => {
         auth.onAuthStateChanged((userAuth) => {
             setUserAuth(!!userAuth);
         });
     }, []);
 
-    //randevu listesi getirme
     useEffect(() => {
         if (userAuth) {
             const dbRef = ref(getDatabase());
@@ -91,7 +82,6 @@ export default function NotificationsScreen({ navigation }) {
         return get(dbRef)
             .then((snapshot) => {
                 if (snapshot.exists()) {
-                    // console.log(snapshot.val())
                     return snapshot.val();
                 } else {
                     return null;
@@ -118,7 +108,7 @@ export default function NotificationsScreen({ navigation }) {
                             ""
                         ) : (
                             <View style={styles.list_container}>
-                                <Text style={styles.text}>Bildirimlerim</Text>
+                                <Text style={styles.header_text}>Bildirimlerim</Text>
                                 <View>
                                     {appointmentList
                                         .slice(0, 2)
@@ -152,29 +142,6 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 48,
     },
-    top_container: {
-        paddingHorizontal: 24,
-    },
-    card_container: {
-        marginVertical: 16,
-        backgroundColor: colors.color_primary,
-        borderRadius: 20,
-        padding: 16,
-    },
-    header_container: {
-        marginVertical: 16,
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    welcome_container: {
-        marginTop: 48,
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    search_container: {
-        flex: 1,
-        paddingBottom: 16,
-    },
     app_container: {
         flex: 1,
         paddingHorizontal: 24,
@@ -183,39 +150,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     header_text: {
-        fontSize: 34,
+        marginVertical: 16,
+        fontSize: 30,
         fontFamily: "Mulish-Medium",
-        color: colors.color_primary,
-        flex: 1,
-    },
-    welcome_text: {
-        paddingHorizontal: 8,
-        fontSize: 24,
-        color: colors.color_white,
-        fontFamily: "Mulish-Medium",
-    },
-    text: {
-        flex: 1,
-        fontSize: 18,
-        paddingVertical: 16,
-        fontFamily: "Mulish-Medium",
-    },
-    detail_text: {
-        flex: 1,
-        flexWrap: "wrap",
-        fontSize: 16,
-        paddingVertical: 16,
-        paddingHorizontal: 8,
-        color: colors.color_white,
-        fontFamily: "Mulish-Medium",
-    },
-    welcome_text_bold: {
-        color: colors.color_white,
-        fontSize: 24,
-        fontFamily: "Mulish-Bold",
-    },
-    icon: {
-        color: colors.color_primary,
     },
     loading_container: {
         flex: 1,

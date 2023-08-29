@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import parseContentData from "../utils/ParseContentData";
 import { getAuth } from "firebase/auth";
-import { colors } from "../styles/Theme";
+import { colors, sizes } from "../styles/Theme";
 import CardAppointment from "../components/CardAppointment";
 import { showTopMessage } from "../utils/ErrorHandler";
 import { sortAppointmentsByDateAndTime } from "../utils/CalendarUtils";
@@ -137,7 +137,7 @@ export default function CalendarScreen() {
             <Text style={styles.header_text}>Randevularım</Text>
             {loading ? (
                 <ActivityIndicator
-                    style={styles.loadingIndicator}
+                    style={styles.loading_container}
                     size="large"
                     color={colors.color_primary}
                 />
@@ -188,9 +188,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginHorizontal: 24,
     },
-    loadingIndicator: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+    loading_container: {
+        position:"absolute",
+        top:sizes.height/2,
+        left:sizes.width/2,
     },
 });

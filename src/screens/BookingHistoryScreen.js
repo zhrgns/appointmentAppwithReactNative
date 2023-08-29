@@ -1,26 +1,27 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 
 export default function BookingHistoryScreen() {
     const bookingHistoryData = [
-        { id: 1, serviceName: "Hizmet 1", date: "2023-08-01" },
-        { id: 2, serviceName: "Hizmet 2", date: "2023-08-05" },
-        { id: 3, serviceName: "Hizmet 3", date: "2023-08-10" },
+        { id: 1, serviceName: "Eğitim", date: "2023-08-01" },
+        { id: 2, serviceName: "Sağlık", date: "2023-08-05" },
+        { id: 3, serviceName: "Spor", date: "2023-08-10" },
     ];
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.header_text}></Text>
-            <View style={styles.historyContainer}>
-                <Text style={styles.historyTitle}>Geçmiş Randevularınız:</Text>
-                {bookingHistoryData.map((booking) => (
-                    <View key={booking.id} style={styles.bookingItem}>
-                        <Text>{booking.serviceName}</Text>
-                        <Text>{booking.date}</Text>
-                    </View>
-                ))}
+        <ScrollView>
+            <View style={styles.container}>
+                <Text style={styles.header_text}>Bildirimlerim</Text>
+                <View style={styles.historyContainer}>
+                    {bookingHistoryData.map((booking) => (
+                        <View key={booking.id} style={styles.bookingItem}>
+                            <Text>{booking.serviceName}</Text>
+                            <Text>{booking.date}</Text>
+                        </View>
+                    ))}
+                </View>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
@@ -31,8 +32,7 @@ const styles = StyleSheet.create({
         marginTop: 48,
     },
     header_text: {
-        marginHorizontal: 24,
-        marginVertical: 32,
+        marginVertical: 16,
         fontSize: 30,
         fontFamily: "Mulish-Medium",
     },
