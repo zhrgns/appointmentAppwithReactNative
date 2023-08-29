@@ -1,7 +1,8 @@
 # Online Appointment Application for Mobile Devices
 
-## Project Objectives:
 The Online Appointment Application aims to address the inefficiencies in appointment processes by making scheduling and management of appointments with service providers easier. Designed to minimize the time wastage and congested phone traffic caused by traditional phone-based communication, the project seeks to digitize modern appointment processes. Users can view service provider working hours, make appointments, track past appointments, and manage them, redefining productivity in appointment scheduling.
+
+![AppUI](/appointmentAppwithReactNative/assets/appUI.jpg)
 
 ## Technologies Used:
 
@@ -28,6 +29,6 @@ The Online Appointment Application aims to address the inefficiencies in appoint
 * Ensure Node.js and Expo CLI are installed.
 * Open the terminal in the project folder and run `npm install` to install dependencies.
 * Create a Firebase account and add the Firebase configuration to the project.
-* Start the project by running the `npx expo start` command in the terminal. To try the application live an emulator needed also. 
+* Start the project by running the `npx expo start` command in the terminal. To try the application live an emulator needed also.
 
 ---
