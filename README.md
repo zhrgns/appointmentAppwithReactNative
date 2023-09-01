@@ -1,8 +1,8 @@
 # Online Appointment Application for Mobile Devices
 
-The Online Appointment Application aims to address the inefficiencies in appointment processes by making scheduling and management of appointments with service providers easier. Designed to minimize the time wastage and congested phone traffic caused by traditional phone-based communication, the project seeks to digitize modern appointment processes. Users can view service provider working hours, make appointments, track past appointments, and manage them, redefining productivity in appointment scheduling.
+The Online Appointment Application aims to address the inefficiencies in appointment processes by making scheduling and managing appointments with service providers easier. Designed to minimize the time waste and congested phone traffic caused by traditional phone-based communication, the project seeks to digitize modern appointment processes. Users can view service provider working hours, make appointments, track past appointments, and manage them, redefining productivity in appointment scheduling.
 
-![AppUI](/appointmentAppwithReactNative/assets/appUI.jpg)
+![AppUI](/assets/appUI.jpg)
 
 ![Gif](/appointmentAppwithReactNative/assets/appGif.gif)
 
@@ -12,7 +12,7 @@ The Online Appointment Application aims to address the inefficiencies in appoint
 
 * Frontend: React Native, Expo, Expo Go App, React Navigation
 
-* Installed Packages: Expo Vector Icons, Expo Notifications, React Native Flash Message, React Native Popup Menu, Formik, Moment, Expo-Image Picker, React Native Reanimated, React Native Maps, Expo Location
+* Installed Packages: Expo Vector Icons, Expo Notifications, React Native Flash Message, React Native Popup Menu, Formik, Moment, Expo-Image Picker, React Native Reanimated, React Native Maps, Expo Location, React Native Share
 
 
 ## Key Features in the Project:
@@ -21,9 +21,11 @@ The Online Appointment Application aims to address the inefficiencies in appoint
 
 * Real-time availability status for booking appointments
 
-* Notifications and retrospective view of past appointments
+* Notifications, view of upcoming and past appointments
 
 * GPS integration for locating nearby services
+
+* Share services with others.
 
 
 ## Requirements and Installation:
