@@ -30,7 +30,7 @@
     "moment": "^2.29.4",
     "native-base": "^3.4.28",
     "react": "18.2.0",
-    "react-native": "0.72.3",
+    "react-native": "0.72.4",
     "react-native-calendars": "^1.1300.0",
     "react-native-flash-message": "^0.4.1",
     "react-native-gesture-handler": "~2.12.0",

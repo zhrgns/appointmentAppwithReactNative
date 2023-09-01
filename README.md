@@ -4,6 +4,8 @@ The Online Appointment Application aims to address the inefficiencies in appoint
 
 ![AppUI](/appointmentAppwithReactNative/assets/appUI.jpg)
 
+![Gif](/appointmentAppwithReactNative/assets/appGif.gif)
+
 ## Technologies Used:
 
 * Backend: Firebase Realtime Database, and Firebase Authentication with Firebase JS SDK
