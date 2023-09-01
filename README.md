@@ -4,7 +4,8 @@ The Online Appointment Application aims to address the inefficiencies in appoint
 
 ![AppUI](/assets/appUI.jpg)
 
-![Gif](/appointmentAppwithReactNative/assets/appGif.gif)
+![Gif](https://github.com/zhrgns/appointmentAppwithReactNative/blob/main/assets/appGif.gif)
+
 
 ## Technologies Used:
 
